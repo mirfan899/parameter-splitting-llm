@@ -19,6 +19,8 @@ This directory contains **publication-ready LaTeX manuscripts**, **BibTeX biblio
 
 ## 📊 Core Empirical Findings Included in the Paper
 
+All twelve runs share one recipe: Kaggle 2×T4, bfloat16, AdamW (lr 2e-5), 25 steps (batch 1, accumulation 2), 128-token sequences, only the SwiGLU MLP parameters trainable, 30 fine-tuning / 10 held-out examples per dataset, seed 42. *PPL Drop* is the relative perplexity reduction; *3.2×* is the ratio of that reduction to the unexpanded model's, not a wall-clock speed-up.
+
 ### Table 1: Multi-Model & Multi-Dataset Empirical Benchmark (Kaggle T4 Verified)
 | Model Architecture | Evaluation Dataset | Growth Method | Parameters | Init PPL | Final PPL | PPL Drop (%) | Key Takeaway |
 | :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
@@ -40,25 +42,27 @@ This directory contains **publication-ready LaTeX manuscripts**, **BibTeX biblio
 ## 📁 Files in This Directory
 
 * **[`paper_iclr.tex`](paper_iclr.tex)**: Master manuscript in official ICLR format.
-* **[`paper_acl.tex`](paper_acl.tex)**: Two-column format for ACL Rolling Review / EMNLP.
+* **[`paper_acl.tex`](paper_acl.tex)**: Two-column ACL Rolling Review manuscript (long paper). Compiled with `\usepackage[review]{acl}` (anonymous, line-numbered) for submission; switch to `[final]` for the camera-ready. Includes Related Work, the invariance proof, the sign-preservation and drift-cancellation propositions, the full fine-tuning recipe (Table 2), the mandatory **Limitations** section, an Ethics Statement, and appendices (MoE/LoRA regimes, prompt templates, reproducibility).
 * **[`paper_colm.tex`](paper_colm.tex)**: Manuscript formatted for Conference on Language Modeling.
 * **[`paper_tmlr.tex`](paper_tmlr.tex)**: Fast-track journal format for TMLR on OpenReview.
-* **[`references.bib`](references.bib)**: Complete BibTeX bibliography with all foundational citations.
+* **[`references.bib`](references.bib)**: Shared BibTeX bibliography (51 entries: Transformer/SwiGLU, function-preserving growth, neuron splitting, MoE upcycling, PEFT, datasets, optimisation, software).
 * **[`math_commands.tex`](math_commands.tex)**: Standard mathematical shorthand and notation macros.
 * **[`dps_llm_training_curve.png`](dps_llm_training_curve.png)**: Embedded 300 DPI training convergence plot.
 * **[`benchmark_ppl_comparison.png`](benchmark_ppl_comparison.png)**: Single-column 300 DPI perplexity improvement comparison plot.
 * **[`benchmark_symmetry_margin.png`](benchmark_symmetry_margin.png)**: Single-column 300 DPI symmetry-breaking advantage and capacity relief plot.
 * **[`multi_model_benchmark_comparison.png`](multi_model_benchmark_comparison.png)**: Wide two-panel composite comparison figure.
+* **[`benchmark_loss_convergence.png`](benchmark_loss_convergence.png)**: Per-step fine-tuning loss on Qwen2.5-0.5B (exported from the Kaggle run). The raw loss histories were not saved for that run; the benchmark notebook now writes `loss_histories.json` and `benchmark_results.csv`, and `python ../generate_loss_convergence_figure.py loss_histories.json` regenerates this figure at 300 DPI as a two-panel plot.
 
 ---
 
 ## 🚀 How to Compile or Edit on Overleaf
 
-1. Compress the contents of this `paper/` folder into a ZIP file:
+1. Compress the sources of this `paper/` folder into a ZIP file (build artefacts excluded):
    ```bash
    cd parameter-splitting-llm/paper
-   zip -r dps_llm_paper.zip .
+   zip dps_llm_paper.zip *.tex *.bib *.sty *.bst *.png
    ```
+   Or build locally: `pdflatex paper_acl && bibtex paper_acl && pdflatex paper_acl && pdflatex paper_acl`.
 2. Go to **[overleaf.com](https://www.overleaf.com)** $\to$ **New Project** $\to$ **Upload Project**.
 3. Select `dps_llm_paper.zip`.
 4. Choose the `.tex` file for your desired venue (`paper_iclr.tex`, `paper_acl.tex`, etc.) and click **Recompile**.

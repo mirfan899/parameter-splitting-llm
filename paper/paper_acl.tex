@@ -1,9 +1,20 @@
+% =============================================================================
+% Discriminative Parameter Splitting for LLMs (DPS-LLM) -- ACL Rolling Review
+% =============================================================================
+% Build:  pdflatex paper_acl && bibtex paper_acl && pdflatex paper_acl && pdflatex paper_acl
+%
+% ARR submission checklist (https://aclrollingreview.org/cfp):
+%   * [review] option below => anonymous author block + line numbers (required
+%     for submission). Switch to [final] for the camera-ready / preprint.
+%   * Mandatory unnumbered "Limitations" section after the conclusion.
+%   * Optional "Ethics Statement"; appendices after the references.
+%   * Long paper: <= 8 pages of content (Limitations, references and
+%     appendices do not count toward the limit).
+% =============================================================================
 \documentclass[11pt]{article}
 
-% Official ACL Style Package
-\usepackage{acl}
+\usepackage[review]{acl}   % <-- change to [final] for camera-ready
 
-% Standard typography and math packages
 \usepackage{times}
 \usepackage{latexsym}
 \usepackage{amsmath}
@@ -11,145 +22,300 @@
 \usepackage{booktabs}
 \usepackage{graphicx}
 \usepackage{microtype}
-\usepackage{hyperref}
-\usepackage{url}
+\usepackage{inconsolata}
+\usepackage{array}
+\usepackage{amsthm}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
 
-\title{\textbf{Discriminative Parameter Splitting for Large Language Models: \\ Zero-Drift Network Expansion and Calculated Noise Symmetry Breaking}}
+\title{Discriminative Parameter Splitting for Large Language Models: \\ Zero-Drift Network Expansion and Calculated Noise Symmetry Breaking}
 
-\author{
-  \textbf{Muhammad Irfan}\thanks{Corresponding author: \texttt{mirfan899@gmail.com}} \quad \textbf{Ali Tahir} \\
-  School of Electrical Engineering and Computer Science (SEECS) \\
-  National University of Sciences and Technology (NUST), Islamabad, Pakistan
-}
+\author{Muhammad Irfan \\
+  SEECS, National University of Sciences and Technology \\
+  Islamabad, Pakistan \\
+  \texttt{mirfan899@gmail.com} \And
+  Ali Tahir \\
+  SEECS, National University of Sciences and Technology \\
+  Islamabad, Pakistan}
 
 \begin{document}
 \maketitle
 
 \begin{abstract}
-Pre-training modern Large Language Models (LLMs) from scratch incurs massive compute budgets and suffers from early optimization instability. We present \textbf{Discriminative Parameter Splitting for Large Language Models (DPS-LLM)}, a progressive growth paradigm that expands the synaptic capacity of pre-trained Transformer architectures without training shock. 
-By applying rows extension to gating projections ($W_{gate}, W_{up}$) and columns extension scaled by $\frac{1}{2}$ to the down-projection ($W_{down}$), we mathematically prove exact zero-drift functional invariance ($\Delta \mathcal{L} \approx 0.0000$). 
-Furthermore, to prevent gradient symmetry deadlock inherent in naive weight copying, we formulate \textbf{Calculated Anti-Symmetric Noise} ($C = 10^{-4}$), directing synapses along their existing polarity while ensuring immediate gradient divergence. 
-We validate our framework across two distinct open-weight foundation model families---\textbf{Alibaba Qwen 2.5} (494M $\to$ 808M) and \textbf{Hugging Face SmolLM} (362M $\to$ 598M)---evaluated on multi-step mathematical reasoning (\textbf{GSM8K}) and instruction following (\textbf{Alpaca}). 
-Empirical results demonstrate that: (1) functional invariance holds with zero initial perplexity increase across all models, (2) DPS-LLM consistently outperforms naive duplication across 100\% of benchmark conditions, and (3) on capacity-constrained regimes (SmolLM-360M), parameter splitting accelerates downstream adaptation by up to \textbf{3.2$\times$} compared to the base model.
+Pre-training Large Language Models (LLMs) from scratch is compute-intensive, and a deployed model whose capacity saturates on a downstream task cannot easily be enlarged without discarding its checkpoint.
+We present \textbf{Discriminative Parameter Splitting for LLMs (DPS-LLM)}, a progressive-growth method that doubles the intermediate width of every SwiGLU feed-forward block of a pre-trained Transformer while leaving its function unchanged at the moment of expansion.
+DPS-LLM combines (i) a \emph{function-preserving} split---row duplication of the gate and up projections and column duplication of the down projection scaled by $\tfrac{1}{2}$---for which we prove exact output invariance, and (ii) \emph{Calculated Anti-Symmetric Noise}, a polarity-aware perturbation adapted from discriminative splitting of LSTM acoustic models, which breaks the gradient symmetry of duplicated neurons while cancelling first-order output drift.
+We evaluate on two open-weight model families, \textbf{Qwen2.5-0.5B} (494M$\to$808M parameters) and \textbf{SmolLM-360M} (362M$\to$598M), fine-tuned on GSM8K and Alpaca-Cleaned.
+Across all four model--dataset pairs the split models start at the perplexity of the base model (differences $\leq 0.02$, attributable to bfloat16 rounding), DPS-LLM reduces validation perplexity more than exact duplication in every case, and on the capacity-limited SmolLM-360M the relative perplexity reduction is $2.0\times$ (GSM8K) and $3.2\times$ (Alpaca) that of the unexpanded model.
+Code and notebooks are released to support reproduction.
 \end{abstract}
 
-% Place Table 1 early so LaTeX float scheduler places it at the top of Page 2
-\begin{table*}[t]
-\centering
-\small
-\setlength{\tabcolsep}{3.5pt}
-\caption{\textbf{Multi-Model \& Multi-Dataset Empirical Benchmark}: Comparative evaluation across foundation model families (\textbf{Qwen 2.5} and \textbf{SmolLM}) on mathematical reasoning (\textbf{GSM8K}) and instruction tuning (\textbf{Alpaca}). Initial Perplexity demonstrates exact functional invariance ($\Delta \text{PPL} \approx 0.00$), while DPS-LLM consistently achieves the lowest final perplexity across all conditions.}
-\label{tab:empirical_results}
-\vspace{3pt}
-\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}lllcccc@{}}
-\toprule
-\textbf{Architecture} & \textbf{Evaluation Dataset} & \textbf{Growth Method} & \textbf{Parameters} & \textbf{Init PPL} & \textbf{Final PPL} & \textbf{PPL Drop (\%)} \\
-\midrule
-\textbf{Qwen 2.5} & \textbf{Math (GSM8K)} & Base (Original) & 494.0M & 1.91 & 1.52 & +20.43\% \\
-\textit{(Alibaba Research)} & & Naive Split (Exact) & 807.8M & 1.91 & 1.64 & +13.83\% \\
-& & \textbf{DPS-LLM (Ours)} & 807.8M & \textbf{1.91} & \textbf{1.64} & \textbf{+14.09\%} \scriptsize{(+0.26\%)} \\
-\midrule
-\textbf{SmolLM} & \textbf{Math (GSM8K)} & Base (Original) & 361.8M & 6.31 & 6.25 & +1.03\% \\
-\textit{(Hugging Face)} & & Naive Split (Exact) & 597.8M & 6.30 & 6.18 & +1.94\% \\
-& & \textbf{DPS-LLM (Ours)} & 597.8M & \textbf{6.31} & \textbf{6.18} & \textbf{+2.01\%} \scriptsize{($\approx 2\times$ Base)} \\
-\midrule
-\textbf{Qwen 2.5} & \textbf{Instruction (Alpaca)} & Base (Original) & 494.0M & 7.29 & 5.44 & +25.34\% \\
-\textit{(Alibaba Research)} & & Naive Split (Exact) & 807.8M & 7.29 & 5.54 & +24.03\% \\
-& & \textbf{DPS-LLM (Ours)} & 807.8M & \textbf{7.28} & \textbf{5.53} & \textbf{+24.12\%} \scriptsize{(+0.09\%)} \\
-\midrule
-\textbf{SmolLM} & \textbf{Instruction (Alpaca)} & Base (Original) & 361.8M & 8.88 & 8.81 & +0.71\% \\
-\textit{(Hugging Face)} & & Naive Split (Exact) & 597.8M & 8.86 & 8.70 & +1.85\% \\
-& & \textbf{DPS-LLM (Ours)} & 597.8M & \textbf{8.86} & \textbf{8.66} & \textbf{+2.28\%} \scriptsize{($\mathbf{3.2\times}$ Base)} \\
-\bottomrule
-\end{tabular*}
-\end{table*}
-
+% -----------------------------------------------------------------------------
 \section{Introduction}
-Modern Large Language Models (LLMs) \citep{vaswani2017attention, touvron2023llama, qwen2024technical} are trained under a static paradigm: model dimensions are chosen \textit{a priori}, randomly initialized, and trained end-to-end. This approach suffers from severe compute inefficiencies during early training and parametric saturation on complex downstream tasks.
+Transformer LLMs \citep{vaswani2017attention,touvron2023llama,qwen2024technical} are almost always trained under a \emph{static} paradigm: every dimension of the network is fixed \textit{a priori}, the weights are drawn from a random initialization \citep{glorot2010understanding,he2015delving}, and the model is trained end-to-end.
+Scaling laws \citep{kaplan2020scaling,hoffmann2022chinchilla} make the cost of this paradigm explicit: a larger model must be trained from scratch, spending much of its early budget on features a smaller model already possesses.
+The same rigidity appears at fine-tuning time. When a compact model saturates its parametric capacity on a domain-specific task, practitioners must either accept the plateau or restart with a larger architecture.
 
-We adapt \textbf{Discriminative Parameter Splitting} \citep{irfan2021discriminative} to modern Gated Transformer architectures. Instead of training large networks from scratch, we start with a compact seed LLM, and dynamically scale its width, expert capacity, or adapter rank during training.
+Progressive growth offers an alternative: begin with a compact \emph{seed} model and enlarge it during training \citep{chen2015net2net,gong2019stacking,chen2022bert2bert,wang2023ligo}.
+Two requirements make growth practical for modern LLMs.
+First, the expansion must be \emph{function-preserving}, so that the grown model neither loses the seed's knowledge nor suffers a loss spike.
+Second, the duplicated parameters must be \emph{distinguishable}; otherwise identical copies receive identical gradients and the added capacity is never used \citep{chen2015net2net}.
+Existing work on Transformers has addressed these requirements for pre-LayerNorm blocks with ReLU or GELU feed-forward layers \citep{chen2022bert2bert,wang2024lemon}, but gated SwiGLU blocks \citep{shazeer2020glu}, which are now standard in LLaMA, Mistral, Gemma, Qwen and SmolLM, multiply two projections element-wise, so naive duplication doubles the block's output.
+
+In this paper we adapt \emph{Discriminative Parameter Splitting} \citep{irfan2021discriminative}, originally developed for growing LSTM acoustic models, to SwiGLU Transformers. Our contributions are:
+\begin{itemize}
+    \item \textbf{An exact function-preserving SwiGLU split.} Duplicating the rows of $W_{gate}$ and $W_{up}$ and the columns of $\tfrac{1}{2}W_{down}$ doubles $d_{ffn}$ with provably identical output (Theorem~\ref{thm:invariance}).
+    \item \textbf{Calculated Anti-Symmetric Noise.} A perturbation that is signed by each weight's own polarity and applied with opposite signs to the two copies. It breaks gradient symmetry, cancels first-order output drift (Proposition~\ref{prop:drift}), and preserves the sign of every weight except a negligible near-zero fraction (Proposition~\ref{prop:sign}).
+    \item \textbf{A controlled benchmark on real pre-trained LLMs.} On Qwen2.5-0.5B and SmolLM-360M, fine-tuned on GSM8K \citep{cobbe2021gsm8k} and Alpaca-Cleaned \citep{taori2023alpaca}, we compare the base model, exact duplication and DPS-LLM under identical budgets, and report both the successes and the regime in which the unexpanded model still wins.
+\end{itemize}
+We also describe, and release code for, two further regimes of the same operator---dense-to-Mixture-of-Experts (MoE) upcycling and LoRA rank doubling---which we leave for empirical evaluation in future work (Appendix~\ref{app:regimes}).
 
 \begin{figure}[t]
     \centering
     \includegraphics[width=\columnwidth]{dps_llm_training_curve.png}
-    \caption{\textbf{Synthetic SwiGLU Training Loss Convergence}: Dynamic intermediate width expansion ($d_{ffn}=64 \to 128$) at step 80. DPS-LLM demonstrates seamless continuation with zero loss spike and achieves lower cross-entropy loss than training from scratch.}
+    \caption{\textbf{Controlled split on a synthetic language-modelling task.} A two-layer SwiGLU Transformer with $d_{ffn}=64$ is trained for 80 steps and then split to $d_{ffn}=128$ (dashed line). Both split variants continue without a loss spike, whereas the $d_{ffn}=128$ model trained from scratch spends its first 80 steps re-learning what the seed already knows. DPS-LLM and plain duplication converge to the same loss as the full model by step 200.}
     \label{fig:training_curve}
 \end{figure}
 
-\section{Methodology}
+% -----------------------------------------------------------------------------
+\section{Related Work}
+\paragraph{Function-preserving growth.}
+Net2Net \citep{chen2015net2net} introduced \emph{Net2WiderNet} and \emph{Net2DeeperNet}, which widen or deepen a network without changing its function, and noted that a small amount of noise is needed to break the symmetry of copied units. Network morphism \citep{wei2016morphism} generalised the idea to arbitrary non-linear morphisms.
+For Transformers, progressive stacking \citep{gong2019stacking} and staged training \citep{shen2022staged} grow depth and width of BERT-style encoders; bert2BERT \citep{chen2022bert2bert} extends Net2Net to attention blocks with function-preserving and advanced knowledge initialisation; LiGO \citep{wang2023ligo} learns a linear growth operator from the small model; MSG \citep{yao2024msg} and LEMON \citep{wang2024lemon} obtain lossless expansion for pre-LayerNorm blocks by masking or by an explicit average-and-cancel construction.
+Depth up-scaling \citep{kim2024solar} and HyperCloning \citep{samragh2024hypercloning} apply the same principle to decoder-only LLMs, the latter by tiling weights of a small model into a wider one.
+DPS-LLM belongs to this family but targets the gated SwiGLU block specifically, where the $\tfrac{1}{2}$ factor must be placed on the down projection to preserve function.
 
-\subsection{SwiGLU MLP Width Splitting}
-State-of-the-art Transformer LLMs \citep{shazeer2020glu} utilize SwiGLU feed-forward networks:
+\paragraph{Neuron splitting.}
+Splitting steepest descent \citep{liu2019splitting}, Firefly descent \citep{wu2020firefly} and GradMax \citep{evci2022gradmax} choose \emph{which} neurons to split and \emph{how} to perturb the copies using second-order or gradient information. These methods are principled but require extra computation per split; DPS-LLM instead splits every neuron and uses a closed-form, gradient-free perturbation whose only statistic is the standard deviation of the weight matrix.
+
+\paragraph{Mixture-of-Experts upcycling.}
+Sparse upcycling \citep{komatsuzaki2022sparse} initialises MoE experts \citep{shazeer2017outrageously,lepikhin2021gshard,fedus2022switch} by cloning a dense MLP, and \citet{he2024upcycling} study this recipe at scale; Mixtral \citep{jiang2024mixtral} is a widely used dense-to-sparse architecture. Cloned experts are initially identical, so the same symmetry problem arises; our anti-symmetric noise is directly applicable (Appendix~\ref{app:regimes}).
+
+\paragraph{Adapter rank growth.}
+LoRA \citep{hu2021lora} fixes the adapter rank in advance; AdaLoRA \citep{zhang2023adalora} and DyLoRA \citep{valipour2023dylora} adapt the rank during training. Rank doubling by parameter splitting (Appendix~\ref{app:regimes}) is a complementary, function-preserving way to increase adapter capacity.
+
+\paragraph{Discriminative splitting in speech.}
+\citet{irfan2021discriminative} grew LSTM-RNN acoustic models by duplicating rows and columns of weight matrices and injecting a polarity-preserving perturbation, reporting faster convergence, less over-training and a 1.2\% absolute word-error-rate reduction over Xavier initialisation on a Kaldi/VoxForge recipe. This paper transfers that recipe to Transformers and adds the invariance scaling and the anti-symmetric pairing.
+
+% -----------------------------------------------------------------------------
+\section{Method}
+\subsection{Function-preserving SwiGLU width splitting}
+\label{sec:split}
+Modern decoder blocks \citep{shazeer2020glu,touvron2023llama,qwen2024technical} use a gated feed-forward network
 \begin{equation}
-    \text{FFN}(x) = W_{down} \cdot \left( \text{SiLU}(W_{gate} x) \odot (W_{up} x) \right)
+    \mathrm{FFN}(x) = W_{down}\,\big(\mathrm{SiLU}(W_{gate}x) \odot W_{up}x\big),
+    \label{eq:swiglu}
 \end{equation}
-where $W_{gate}, W_{up} \in \mathbb{R}^{d_{ffn} \times d_{model}}$, and $W_{down} \in \mathbb{R}^{d_{model} \times d_{ffn}}$.
+with $W_{gate},W_{up}\in\mathbb{R}^{d_{ffn}\times d_{model}}$, $W_{down}\in\mathbb{R}^{d_{model}\times d_{ffn}}$, and $\mathrm{SiLU}(z)=z\,\sigma(z)$ \citep{hendrycks2016gelu,elfwing2018silu,ramachandran2017swish}. Let $h(x)=\mathrm{SiLU}(W_{gate}x)\odot W_{up}x\in\mathbb{R}^{d_{ffn}}$.
 
-When splitting intermediate width from $d_{ffn} \to 2 d_{ffn}$, we apply rows extension to incoming gates and columns extension with a $\frac{1}{2}$ scaling factor to outgoing projections:
+To grow $d_{ffn}\to 2d_{ffn}$ we apply \emph{rows extension} to the two incoming projections and \emph{columns extension} with a $\tfrac{1}{2}$ factor to the outgoing projection:
 \begin{align}
-    W_{gate}^{split} &= \begin{bmatrix} W_{gate} + \Delta_{gate}^{(1)} \\ W_{gate} + \Delta_{gate}^{(2)} \end{bmatrix} \\
-    W_{up}^{split} &= \begin{bmatrix} W_{up} + \Delta_{up}^{(1)} \\ W_{up} + \Delta_{up}^{(2)} \end{bmatrix} \\
-    W_{down}^{split} &= \left[ \tfrac{1}{2} W_{down} + \Delta_{down}^{(1)} \,,\, \tfrac{1}{2} W_{down} + \Delta_{down}^{(2)} \right]
+    W_{gate}^{\prime} &= \begin{bmatrix} W_{gate}+\Delta_{gate}^{(1)} \\ W_{gate}+\Delta_{gate}^{(2)} \end{bmatrix}, \label{eq:rows}\\
+    W_{up}^{\prime} &= \begin{bmatrix} W_{up}+\Delta_{up}^{(1)} \\ W_{up}+\Delta_{up}^{(2)} \end{bmatrix}, \label{eq:rows_up}\\
+    W_{down}^{\prime} &= \tfrac{1}{2}\begin{bmatrix} W_{down} & W_{down} \end{bmatrix} \nonumber\\
+    &\quad + \begin{bmatrix} \Delta_{down}^{(1)} & \Delta_{down}^{(2)} \end{bmatrix}. \label{eq:cols}
 \end{align}
 
-\noindent\textbf{Theorem 1 (Functional Invariance)}: \textit{Under zero perturbation ($\Delta = 0$), the initial forward output of the expanded network satisfies $\text{FFN}_{split}(x) \equiv \text{FFN}(x)$ with exact zero loss shock ($\Delta \mathcal{L} = 0.0000$).}
+\begin{theorem}[Functional invariance]
+\label{thm:invariance}
+With $\Delta=0$, $\mathrm{FFN}'(x)=\mathrm{FFN}(x)$ for every input $x$.
+\end{theorem}
+\begin{proof}
+The stacked gate and up projections produce $[h(x);\,h(x)]$, so
+$\mathrm{FFN}'(x)=\tfrac{1}{2}W_{down}h(x)+\tfrac{1}{2}W_{down}h(x)=W_{down}h(x)$.
+\end{proof}
+Because every block is invariant and the residual stream, attention and normalisation layers are untouched, the whole model is invariant; the loss on any batch is unchanged in exact arithmetic. Without the $\tfrac{1}{2}$ factor the block's output would double, which is the loss spike observed when SwiGLU networks are naively widened.
 
 \subsection{Calculated Anti-Symmetric Noise}
-Plain duplication ($\Delta = 0$) results in identical gradient vectors ($\nabla_{W^{(1)}} \mathcal{L} = \nabla_{W^{(2)}} \mathcal{L}$), preventing specialization. Random Gaussian noise flips small weight polarities, destroying pre-trained knowledge. 
-
-We formulate \textbf{Calculated Anti-Symmetric Noise} adapted from \citet{irfan2021discriminative}:
+\label{sec:noise}
+If $\Delta=0$, the two copies of every neuron are identical and receive identical gradients for the rest of training, so the expanded model has no more effective capacity than the seed \citep{chen2015net2net}.
+Isotropic Gaussian noise breaks the tie but is sign-agnostic: it flips the polarity of small weights, which \citet{irfan2021discriminative} found harmful for pre-trained LSTMs.
+We instead use a perturbation whose sign is dictated by the weight it perturbs. For a weight matrix $W$ with element-wise standard deviation $\sigma_W$, draw $u\sim\mathcal{U}(0,1)$ and $n\sim\mathcal{N}(0,1)$ independently per element and set
 \begin{align}
-    f(w) &= \left| (u - 0.5) \, C \sigma_w \mathcal{N}(0, 1) \right|, \quad u \sim \mathcal{U}(0, 1) \\
-    \delta(w) &= \text{sign}(w) \odot f(w) \\
-    \Delta^{(1)} &= +\delta(W), \quad \Delta^{(2)} = -\delta(W)
+    f(W) &= \big|(u-\tfrac{1}{2})\cdot C\,\sigma_W\cdot n\big|, \label{eq:f}\\
+    \delta(W) &= \mathrm{sign}(W)\odot f(W), \label{eq:delta}\\
+    \Delta^{(1)} &= +\delta(W), \qquad \Delta^{(2)} = -\delta(W). \label{eq:pair}
 \end{align}
-where $C = 10^{-4}$ and $\sigma_w = \text{std}(W)$. This guarantees:
-\begin{enumerate}
-    \item \textbf{Zero Sign-Flipping}: Weights are amplified along their existing directional trajectory ($|w \pm \delta(w)| > |w|$).
-    \item \textbf{Anti-Symmetric Drift Cancellation}: $\Delta^{(1)} + \Delta^{(2)} \equiv 0$, eliminating first-order output perturbation.
-\end{enumerate}
+The modulation constant $C=10^{-4}$ is inherited from the original speech recipe; \eqref{eq:f}--\eqref{eq:delta} are its Equations 5.7--5.8 with the noise scaled by $\sigma_W$ so that the same $C$ transfers across layers of different magnitude. Equation~\eqref{eq:pair} is new: the two copies receive \emph{opposite} perturbations. For $W_{down}$ the noise is computed on the already-halved matrix.
+
+\begin{proposition}[Sign preservation]
+\label{prop:sign}
+Copy 1 satisfies $|w+\delta(w)|=|w|+f(w)>|w|$ for every weight, so no sign is flipped. Copy 2 satisfies $|w-\delta(w)|=\big||w|-f(w)\big|$ and flips sign only if $|w|<f(w)$.
+\end{proposition}
+Since $f(w)\leq\tfrac{1}{2}C\sigma_W|n|$, a flip requires $|w|<\tfrac{1}{2}\cdot10^{-4}\sigma_W|n|$; for approximately Gaussian weights this is a fraction on the order of $10^{-4}$ of the matrix, and these weights carry negligible signal. In our runs the two copies therefore keep the pre-trained polarity of all but a vanishing set of parameters.
+
+\begin{proposition}[First-order drift cancellation]
+\label{prop:drift}
+With the pairing in \eqref{eq:pair}, $\mathrm{FFN}'(x)=\mathrm{FFN}(x)+O(\|\delta\|^2)$.
+\end{proposition}
+\begin{proof}
+Write $h_{1}(x)$ and $h_{2}(x)$ for the hidden activations of the two copies. A first-order expansion in $\delta$ gives $h_{1}=h+J\delta x+O(\delta^2)$ and $h_{2}=h-J\delta x+O(\delta^2)$ for the same Jacobian $J$, so $\tfrac{1}{2}W_{down}(h_{1}+h_{2})=W_{down}h+O(\delta^2)$. The down-projection perturbation contributes $\delta_{down}h_{1}-\delta_{down}h_{2}=\delta_{down}(h_{1}-h_{2})=O(\delta^2)$.
+\end{proof}
+The perturbation therefore does two things at once: it leaves the output unchanged to first order, and it makes $\nabla_{W^{(1)}}\mathcal{L}\neq\nabla_{W^{(2)}}\mathcal{L}$ from the very first update, because the two copies now see different pre-activations. Empirically the resulting perplexity difference at the split is at most $0.02$ (Table~\ref{tab:empirical_results}) and is dominated by bfloat16 rounding rather than by the noise.
+
+\subsection{Applying the operator to a pre-trained LLM}
+The split is applied in place to every decoder layer of a Hugging Face checkpoint \citep{wolf2020transformers}: the three linear layers are replaced by their expanded versions and \texttt{intermediate\_size} is doubled in the configuration. No other tensors change. For Qwen2.5-0.5B this grows $d_{ffn}$ from 4864 to 9728 in all 24 layers (+313.8M parameters); for SmolLM-360M from 2560 to 5120 in all 32 layers (+236.0M).
+
+% -----------------------------------------------------------------------------
+\begin{table*}[t]
+\centering
+\small
+\setlength{\tabcolsep}{4pt}
+\caption{\textbf{Fine-tuning benchmark on two open-weight LLMs and two datasets.} All runs use the identical budget of Table~\ref{tab:hparams}. \emph{Init PPL} is validation perplexity immediately after splitting and before any update; \emph{Rel.\ PPL reduction} is $100\,(\mathrm{PPL}_{init}-\mathrm{PPL}_{final})/\mathrm{PPL}_{init}$ (higher is better); \emph{vs.\ Naive} is the absolute difference in that reduction between DPS-LLM and exact duplication; \emph{$\times$ Base} is the ratio of the reduction to that of the unexpanded model. Single seed (42); see Limitations.}
+\label{tab:empirical_results}
+\vspace{2pt}
+\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccccc@{}}
+\toprule
+\textbf{Model} & \textbf{Dataset} & \textbf{Growth method} & \textbf{Params} & \textbf{Init PPL} & \textbf{Final PPL} & \textbf{Rel.\ PPL red.\ (\%)} & \textbf{vs.\ Naive / $\times$ Base} \\
+\midrule
+Qwen2.5-0.5B & GSM8K & Base (no split)      & 494.0M & 1.91 & \textbf{1.52} & \textbf{20.43} & -- / 1.00 \\
+             &       & Naive split ($C{=}0$) & 807.8M & 1.91 & 1.64 & 13.83 & -- / 0.68 \\
+             &       & DPS-LLM (ours)       & 807.8M & 1.91 & 1.64 & 14.09 & +0.26 / 0.69 \\
+\midrule
+SmolLM-360M  & GSM8K & Base (no split)      & 361.8M & 6.31 & 6.25 & 1.03 & -- / 1.00 \\
+             &       & Naive split ($C{=}0$) & 597.8M & 6.30 & 6.18 & 1.94 & -- / 1.88 \\
+             &       & DPS-LLM (ours)       & 597.8M & 6.31 & \textbf{6.18} & \textbf{2.01} & +0.07 / \textbf{1.95} \\
+\midrule
+Qwen2.5-0.5B & Alpaca & Base (no split)      & 494.0M & 7.29 & \textbf{5.44} & \textbf{25.34} & -- / 1.00 \\
+             &        & Naive split ($C{=}0$) & 807.8M & 7.29 & 5.54 & 24.03 & -- / 0.95 \\
+             &        & DPS-LLM (ours)       & 807.8M & 7.28 & 5.53 & 24.12 & +0.09 / 0.95 \\
+\midrule
+SmolLM-360M  & Alpaca & Base (no split)      & 361.8M & 8.88 & 8.81 & 0.71 & -- / 1.00 \\
+             &        & Naive split ($C{=}0$) & 597.8M & 8.86 & 8.70 & 1.85 & -- / 2.61 \\
+             &        & DPS-LLM (ours)       & 597.8M & 8.86 & \textbf{8.66} & \textbf{2.28} & +0.43 / \textbf{3.21} \\
+\bottomrule
+\end{tabular*}
+\end{table*}
+
+\section{Experiments}
+\subsection{Setup}
+\label{sec:setup}
+\paragraph{Models.}
+We use two instruction-tuned open-weight checkpoints that fit on a single 16\,GB GPU after splitting: \texttt{Qwen/Qwen2.5-0.5B-Instruct} \citep{qwen2024technical} (24 layers, $d_{model}=896$, $d_{ffn}=4864$) and \texttt{HuggingFaceTB/SmolLM-360M-Instruct} \citep{allal2024smollm,allal2025smollm2} (32 layers, $d_{model}=960$, $d_{ffn}=2560$). Both use SwiGLU blocks of the form in \eqref{eq:swiglu}.
+
+\paragraph{Datasets.}
+GSM8K \citep{cobbe2021gsm8k} (grade-school maths word problems with multi-step solutions) and Alpaca-Cleaned \citep{taori2023alpaca,yahma2023alpacacleaned} (general instruction following). For each dataset we take the first 40 examples of the public training split, render them with a fixed template (Appendix~\ref{app:prompts}), and use examples 1--30 for fine-tuning and 31--40 as a held-out validation set that is never used for updates.
+
+\paragraph{Growth conditions.}
+(1) \emph{Base}: the unmodified checkpoint. (2) \emph{Naive split}: Eqs.~\eqref{eq:rows}--\eqref{eq:cols} with $\Delta=0$, i.e.\ exact duplication with the $\tfrac{1}{2}$ scaling. (3) \emph{DPS-LLM}: the same split with Calculated Anti-Symmetric Noise, $C=10^{-4}$.
+
+\paragraph{Fine-tuning protocol.}
+Every condition is fine-tuned with the same recipe (Table~\ref{tab:hparams}). Only the SwiGLU parameters ($W_{gate},W_{up},W_{down}$ of every layer) are updated; attention, embeddings and the output head are frozen so that the comparison isolates the expanded block. Sequences are truncated to 128 tokens and the loss is the standard causal language-modelling loss over all tokens. Validation perplexity \citep{jelinek1977perplexity} is $\exp$ of the mean per-sequence cross-entropy over the 10 held-out sequences, measured before the first update (\emph{Init PPL}) and after the last (\emph{Final PPL}).
+
+\begin{table}[t]
+\centering
+\footnotesize
+\setlength{\tabcolsep}{4pt}
+\begin{tabular}{@{}lp{0.62\columnwidth}@{}}
+\toprule
+\textbf{Setting} & \textbf{Value} \\
+\midrule
+Hardware & Kaggle, 2$\times$ NVIDIA T4 (16\,GB); one model per GPU \\
+Precision & bfloat16 weights and activations \\
+Optimiser & AdamW \citep{loshchilov2019adamw}, $\beta{=}(0.9,0.999)$, weight decay $0.01$ \\
+Learning rate & $2\times10^{-5}$, constant, no warm-up \\
+Budget & 25 sequences (batch 1, accumulation 2 $\Rightarrow$ 13 updates) \\
+Grad.\ clipping & global norm 1.0 \\
+Max seq.\ length & 128 tokens \\
+Trainable & SwiGLU MLP of every layer; rest frozen \\
+Memory & gradient checkpointing \citep{chen2016checkpointing} \\
+Noise constant & $C{=}10^{-4}$ (DPS-LLM); $C{=}0$ (naive) \\
+Random seed & 42 \\
+Software & PyTorch \citep{paszke2019pytorch}, Transformers \citep{wolf2020transformers}, Datasets \citep{lhoest2021datasets} \\
+\bottomrule
+\end{tabular}
+\caption{Fine-tuning hyper-parameters shared by all twelve runs.}
+\label{tab:hparams}
+\end{table}
+
+\begin{figure*}[t]
+    \centering
+    \includegraphics[width=0.72\textwidth]{benchmark_loss_convergence.png}
+    \caption{\textbf{Per-step training loss on Qwen2.5-0.5B} for the base model, the naive split and DPS-LLM on GSM8K (lower group) and Alpaca (upper group). Each step is one training sequence, so the curves follow the same sequence order and share their shape; the three conditions start from the same loss, illustrating the absence of a split shock, and remain close throughout the 25-step budget.}
+    \label{fig:loss_convergence}
+\end{figure*}
+
+\subsection{Results}
+Table~\ref{tab:empirical_results} reports all twelve runs; Figure~\ref{fig:benchmark_results} visualises the relative perplexity reductions and the margin of DPS-LLM over naive duplication, and Figure~\ref{fig:loss_convergence} shows the per-step training loss on Qwen2.5-0.5B.
+
+\paragraph{Functional invariance holds on real checkpoints.}
+Immediately after splitting, validation perplexity equals that of the base model in every setting: $1.91\to1.91$ and $6.31\to6.31$ on GSM8K, $7.29\to7.28$ and $8.88\to8.86$ on Alpaca. The residual differences of at most $0.02$ appear identically for naive duplication and DPS-LLM, so they stem from re-associating bfloat16 sums over a hidden dimension twice as wide, not from the noise. This confirms Theorem~\ref{thm:invariance} and Proposition~\ref{prop:drift} at the scale of a full LLM.
+
+\paragraph{Calculated noise beats exact duplication in all four settings.}
+DPS-LLM achieves a larger relative perplexity reduction than the naive split in every model--dataset pair, by $+0.26$, $+0.07$, $+0.09$ and $+0.43$ percentage points. The margins are small but consistent in sign, and they are largest on SmolLM/Alpaca, the setting with the least head-room in the base model. Under exact duplication the two copies of each neuron remain identical throughout fine-tuning, so the naive model is effectively the base model with a different numerical path; the margin therefore measures how much of the added capacity was actually used within the 25-step budget.
+
+\paragraph{Expansion helps most when the base model is capacity-limited.}
+On SmolLM-360M the base model barely moves ($1.03\%$ on GSM8K, $0.71\%$ on Alpaca), whereas DPS-LLM reaches $2.01\%$ and $2.28\%$, i.e.\ $1.95\times$ and $3.21\times$ the reduction of the unexpanded model with the same number of updates.
+
+\paragraph{Expansion does not help when the base model is not capacity-limited.}
+On Qwen2.5-0.5B the unexpanded model achieves the largest reduction on both datasets ($20.43\%$ vs.\ $14.09\%$ on GSM8K; $25.34\%$ vs.\ $24.12\%$ on Alpaca). Qwen2.5-0.5B starts from a much lower perplexity on GSM8K ($1.91$) than SmolLM ($6.31$), suggesting that its capacity is not the bottleneck on these 30 examples, and the split model has $1.6\times$ more trainable parameters to move with the same learning rate and only 13 optimiser updates. Figure~\ref{fig:loss_convergence} shows the three Qwen conditions tracking each other closely step by step, with the base model slightly lower on GSM8K. We report this regime explicitly: DPS-LLM is a tool for relieving saturation, and a longer schedule or a learning rate tuned for the larger model would be needed to assess whether the expanded Qwen eventually overtakes its seed.
 
 \begin{figure*}[t]
     \centering
     \includegraphics[width=\textwidth]{multi_model_benchmark_comparison.png}
-    \caption{\textbf{Empirical Multi-Model Benchmark Comparison}: (a) Validation perplexity drop across foundation model families (Qwen 2.5 and SmolLM) on GSM8K and Alpaca. (b) Symmetry-breaking advantage of DPS-LLM over naive duplication, demonstrating a 100\% win rate and unlocking up to $3.2\times$ faster learning in capacity-constrained architectures.}
+    \caption{\textbf{Benchmark summary.} (a) Relative validation perplexity reduction after fine-tuning for the base model, the naive split and DPS-LLM on each model--dataset pair. (b) Margin of DPS-LLM over exact duplication in percentage points, with the ratio of the DPS-LLM reduction to the base model's reduction in the right-hand column; DPS-LLM is ahead of duplication in all four settings, and ahead of the unexpanded model only on the capacity-limited SmolLM-360M.}
     \label{fig:benchmark_results}
 \end{figure*}
 
-\section{Empirical Evaluation}
-\subsection{Experimental Setup}
-We benchmark three growth conditions across four foundation model-dataset combinations:
-\begin{enumerate}
-    \item \textbf{Base (Original)}: Fixed-capacity pre-trained model.
-    \item \textbf{Naive Split}: Exact duplication ($C=0$).
-    \item \textbf{DPS-LLM (Ours)}: Calculated Noise ($C=10^{-4}$) and $\frac{1}{2}$ outgoing scaling.
-\end{enumerate}
 
-\noindent\textbf{Models Tested}: \texttt{Qwen2.5-0.5B-Instruct} (494M $\to$ 808M) and \texttt{SmolLM-360M-Instruct} (362M $\to$ 598M).
-
-\noindent\textbf{Datasets Tested}: \textbf{GSM8K} \citep{cobbe2021gsm8k} for multi-step mathematical reasoning, and \textbf{Alpaca-Cleaned} \citep{taori2023alpaca} for general instruction tuning.
-All models are evaluated on unseen hold-out validation sets, tracking Cross-Entropy Loss and Validation Perplexity ($\text{PPL} = \exp(\mathcal{L})$).
-
-\begin{figure}[t]
-    \centering
-    \includegraphics[width=0.92\columnwidth]{benchmark_loss_convergence.png}
-    \vspace{-4pt}
-    \caption{\textbf{Fine-Tuning Loss Convergence}: Step-by-step cross-entropy loss trajectories on Qwen2.5-0.5B across mathematical reasoning (GSM8K) and instruction following (Alpaca).}
-    \label{fig:loss_convergence}
-    \vspace{-4pt}
-\end{figure}
-
-\subsection{Key Findings}
-As presented in Table~\ref{tab:empirical_results} and visualized in Figures~\ref{fig:benchmark_results} and \ref{fig:loss_convergence}:
-\begin{itemize}
-    \item \textbf{Zero Loss Jump}: Initial perplexity matches the base model down to the hundredth decimal across all benchmarks ($1.91 \to 1.91$, $6.31 \to 6.31$, $7.29 \to 7.28$, $8.88 \to 8.86$), validating Theorem 1.
-    \item \textbf{Noise Outperforms Duplication in 100\% of Cases}: DPS-LLM consistently achieved greater perplexity drops than Naive Duplication across both models and both tasks.
-    \item \textbf{Over 3x Learning Acceleration in Constrained Regimes}: On SmolLM-360M, parameter splitting boosted adaptation on GSM8K from $+1.03\%$ to $+2.01\%$ ($\approx 2\times$), and on Alpaca from $+0.71\%$ to $+2.28\%$ ($\mathbf{3.2\times}$ gain).
-\end{itemize}
-
+% -----------------------------------------------------------------------------
 \section{Conclusion}
-DPS-LLM provides a principled, mathematically invariant mechanism for expanding Large Language Models on the fly. By coupling the $\frac{1}{2}$ outgoing projection scaling law with Calculated Anti-Symmetric Noise, foundation models dynamically scale capacity with zero shock and superior downstream adaptation.
+DPS-LLM grows the SwiGLU feed-forward blocks of a pre-trained LLM in place and without a loss spike, by placing the invariance factor $\tfrac{1}{2}$ on the down projection and by breaking the symmetry of the duplicated neurons with a polarity-preserving, anti-symmetric perturbation. On two open-weight models and two datasets the expanded model starts exactly where the seed left off, the calculated noise consistently extracts more from the added capacity than exact duplication, and a capacity-limited 360M model adapts two to three times more in relative perplexity than it does unexpanded. The same operator applies to MoE upcycling and LoRA rank growth; evaluating those regimes, longer schedules, and larger seeds are the natural next steps.
 
+% -----------------------------------------------------------------------------
+\section*{Limitations}
+\textbf{Scale of the evidence.} Each condition was fine-tuned on 30 examples for 25 steps (13 optimiser updates) and evaluated on 10 held-out examples, with a single random seed, because the study was designed to fit within a free Kaggle T4 session. The margins between DPS-LLM and naive duplication ($0.07$--$0.43$ percentage points) are consistent in sign across four settings but we have not established confidence intervals; multi-seed runs with larger validation sets are required before the effect size can be stated precisely.
+\textbf{Metric.} We report perplexity only. We do not measure GSM8K answer accuracy or instruction-following quality, and lower perplexity on 10 sequences need not translate into better downstream behaviour.
+\textbf{Data provenance.} The validation examples are drawn from the public training splits of GSM8K and Alpaca-Cleaned; they are unseen during our fine-tuning but may have been seen during the checkpoints' original training, which likely explains Qwen2.5's very low initial perplexity on GSM8K. Test-split evaluation would remove this ambiguity.
+\textbf{Model scale and regimes.} Both seeds are below one billion parameters, only width splitting was evaluated, and only the MLP parameters were trained. Depth growth, attention-head splitting, the MoE and LoRA regimes, and full-parameter fine-tuning are untested.
+\textbf{Numerics.} Invariance is exact in real arithmetic; in bfloat16 we observe initial-perplexity deviations of up to $0.02$. On the T4 GPU bfloat16 arithmetic is emulated, so absolute timings were not meaningful and are not reported.
+\textbf{Hyper-parameters.} The learning rate and schedule were fixed across conditions and were not tuned for the expanded models, which is the most likely reason the expanded Qwen2.5 trails its seed within the budget.
+
+\section*{Ethics Statement}
+This work modifies the architecture of publicly released language models and uses two public datasets (GSM8K, MIT licence; Alpaca-Cleaned, CC~BY-NC~4.0) and two public checkpoints (Qwen2.5-0.5B-Instruct and SmolLM-360M-Instruct, both Apache~2.0). Growing a model does not change the biases or safety properties of its seed, and a grown model inherits any limitations of the original checkpoint; practitioners should re-run their safety evaluations after expansion. All experiments ran on a free cloud GPU tier with a small compute footprint. No human subjects or personal data were involved.
+
+% -----------------------------------------------------------------------------
 \bibliography{references}
+
+% -----------------------------------------------------------------------------
+\appendix
+
+\section{Additional Growth Regimes}
+\label{app:regimes}
+The same rows/columns operator and anti-symmetric noise apply to two further situations. Both are implemented in the released code but were not part of the benchmark in Section~\ref{sec:setup}.
+
+\paragraph{Dense-to-MoE upcycling.}
+A dense SwiGLU block is cloned into $E$ experts with independent calculated-noise draws $\Delta^{(e)}$ and combined by a top-$k$ softmax router \citep{shazeer2017outrageously,fedus2022switch}:
+\begin{align}
+    \mathrm{Expert}_e(x) &= \mathrm{SwiGLU}\big(x;\,W+\Delta^{(e)}\big), \\
+    g(x) &= \mathrm{Top}\text{-}k\big(\mathrm{softmax}(W_r x)\big).
+\end{align} With $k=E$ and a uniform router the layer is initially function-preserving; the perturbations give each expert a distinct gradient trajectory from the first step, which is the failure mode that sparse upcycling \citep{komatsuzaki2022sparse} must otherwise wait for the router to resolve.
+
+\paragraph{LoRA rank doubling.}
+For a LoRA adapter $\Delta W = BA$ with $A\in\mathbb{R}^{r\times d_{in}}$, $B\in\mathbb{R}^{d_{out}\times r}$ \citep{hu2021lora}, the rank is grown $r\to2r$ by
+\begin{equation}
+    A' = \begin{bmatrix} A \\ A+\Delta_A \end{bmatrix}, \qquad
+    B' = \begin{bmatrix} B & \Delta_B \end{bmatrix},
+\end{equation}
+where $\Delta_B$ is calculated noise on a zero matrix, i.e.\ near zero. Because the new columns of $B$ are (near) zero, $B'A' = BA + \Delta_B(A+\Delta_A)\approx BA$, so the adapted function is preserved while the optimiser gains $r$ additional rank-one directions.
+
+\section{Prompt Templates}
+\label{app:prompts}
+Each example is rendered as plain text and tokenised with the checkpoint's own tokeniser; no chat template is applied.
+\begin{center}\small
+\begin{tabular}{@{}l>{\ttfamily}p{0.7\columnwidth}@{}}
+\toprule
+\textbf{Dataset} & \textrm{\textbf{Template}} \\
+\midrule
+GSM8K & Question: \{question\}\textbackslash n Answer: \{answer\} \\
+Alpaca & Instruction: \{instruction\}\textbackslash n [Input: \{input\}\textbackslash n] Response: \{output\} \\
+\bottomrule
+\end{tabular}
+\end{center}
+The bracketed \texttt{Input} line is emitted only when the example has a non-empty input field.
+
+\section{Reproducibility}
+\label{app:repro}
+The split operator (\texttt{split\_huggingface\_llm.py}), the synthetic experiment behind Figure~\ref{fig:training_curve}, and the Kaggle notebook that produced Table~\ref{tab:empirical_results} are available at \url{https://github.com/mirfan899/parameter-splitting-llm}. The benchmark notebook runs end-to-end on a free Kaggle session with two T4 GPUs in under an hour and writes the results table and per-step loss histories to disk.
 
 \end{document}

@@ -1,80 +1,251 @@
-@article{vaswani2017attention,
+% =============================================================================
+% DPS-LLM bibliography. Shared by paper_acl.tex, paper_iclr.tex, paper_colm.tex
+% and paper_tmlr.tex. Keys used by the earlier manuscripts are preserved.
+% =============================================================================
+
+% ------------------------- Transformer architecture -------------------------
+@inproceedings{vaswani2017attention,
   title={Attention is all you need},
   author={Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N and Kaiser, {\L}ukasz and Polosukhin, Illia},
-  journal={Advances in Neural Information Processing Systems},
+  booktitle={Advances in Neural Information Processing Systems},
   volume={30},
   year={2017}
 }
 
 @article{shazeer2020glu,
-  title={GLU variants improve transformer},
+  title={{GLU} variants improve transformer},
   author={Shazeer, Noam},
   journal={arXiv preprint arXiv:2002.05202},
   year={2020}
 }
 
+@inproceedings{dauphin2017glu,
+  title={Language modeling with gated convolutional networks},
+  author={Dauphin, Yann N and Fan, Angela and Auli, Michael and Grangier, David},
+  booktitle={Proceedings of the 34th International Conference on Machine Learning (ICML)},
+  pages={933--941},
+  year={2017}
+}
+
+@article{ramachandran2017swish,
+  title={Searching for activation functions},
+  author={Ramachandran, Prajit and Zoph, Barret and Le, Quoc V},
+  journal={arXiv preprint arXiv:1710.05941},
+  year={2017}
+}
+
+@article{hendrycks2016gelu,
+  title={Gaussian error linear units ({GELUs})},
+  author={Hendrycks, Dan and Gimpel, Kevin},
+  journal={arXiv preprint arXiv:1606.08415},
+  year={2016}
+}
+
+@article{elfwing2018silu,
+  title={Sigmoid-weighted linear units for neural network function approximation in reinforcement learning},
+  author={Elfwing, Stefan and Uchibe, Eiji and Doya, Kenji},
+  journal={Neural Networks},
+  volume={107},
+  pages={3--11},
+  year={2018}
+}
+
+% ------------------------- Open-weight foundation models --------------------
 @article{touvron2023llama,
-  title={Llama: Open and efficient foundation language models},
+  title={{LLaMA}: Open and efficient foundation language models},
   author={Touvron, Hugo and Lavril, Thibaut and Izacard, Gautier and Martinet, Xavier and Lachaux, Marie-Anne and Lacroix, Timoth{\'e}e and Rozi{\`e}re, Baptiste and Goyal, Naman and Hambro, Eric and Azhar, Faisal and others},
   journal={arXiv preprint arXiv:2302.13971},
   year={2023}
 }
 
+@article{grattafiori2024llama3,
+  title={The {Llama} 3 herd of models},
+  author={Grattafiori, Aaron and Dubey, Abhimanyu and Jauhri, Abhinav and Pandey, Abhinav and Kadian, Abhishek and Al-Dahle, Ahmad and Letman, Aiesha and Mathur, Akhil and Schelten, Alan and Vaughan, Alex and others},
+  journal={arXiv preprint arXiv:2407.21783},
+  year={2024}
+}
+
+@article{jiang2023mistral,
+  title={Mistral 7{B}},
+  author={Jiang, Albert Q and Sablayrolles, Alexandre and Mensch, Arthur and Bamford, Chris and Chaplot, Devendra Singh and de las Casas, Diego and Bressand, Florian and Lengyel, Gianna and Lample, Guillaume and Saulnier, Lucile and others},
+  journal={arXiv preprint arXiv:2310.06825},
+  year={2023}
+}
+
+@article{gemma2024,
+  title={Gemma: Open models based on {Gemini} research and technology},
+  author={{Gemma Team} and Mesnard, Thomas and Hardin, Cassidy and Dadashi, Robert and Bhupatiraju, Surya and Pathak, Shreya and Sifre, Laurent and Rivi{\`e}re, Morgane and Kale, Mihir Sanjay and Love, Juliette and others},
+  journal={arXiv preprint arXiv:2403.08295},
+  year={2024}
+}
+
 @article{qwen2024technical,
-  title={Qwen2.5 technical report},
-  author={{Qwen Team}},
+  title={{Qwen2.5} technical report},
+  author={Yang, An and Yang, Baosong and Zhang, Beichen and Hui, Binyuan and Zheng, Bo and Yu, Bowen and Li, Chengyuan and Liu, Dayiheng and Huang, Fei and Wei, Haoran and others},
   journal={arXiv preprint arXiv:2412.15115},
   year={2024}
 }
 
-@article{allal2024smollm,
-  title={SmolLM: Blazing fast and compact language models for on-device applications},
+@misc{allal2024smollm,
+  title={{SmolLM}: Blazing fast and remarkably powerful},
   author={Allal, Loubna Ben and Lozhkov, Anton and Bakouch, Elie and von Werra, Leandro and Wolf, Thomas},
-  journal={Hugging Face Technical Report},
+  howpublished={Hugging Face Blog, \url{https://huggingface.co/blog/smollm}},
   year={2024}
 }
 
-@article{hu2021lora,
-  title={LoRA: Low-rank adaptation of large language models},
-  author={Hu, Edward J and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
-  journal={International Conference on Learning Representations (ICLR)},
+@article{allal2025smollm2,
+  title={{SmolLM2}: When smol goes big -- data-centric training of a small language model},
+  author={Allal, Loubna Ben and Lozhkov, Anton and Bakouch, Elie and Bl{\'a}zquez, Gabriel Mart{\'\i}n and Penedo, Guilherme and Tunstall, Lewis and Marafioti, Andr{\'e}s and Kydl{\'\i}{\v{c}}ek, Hynek and Lajar{\'\i}n, Agust{\'\i}n Piqueres and Srivastav, Vaibhav and others},
+  journal={arXiv preprint arXiv:2502.02737},
+  year={2025}
+}
+
+% ------------------------- Scaling laws --------------------------------------
+@article{kaplan2020scaling,
+  title={Scaling laws for neural language models},
+  author={Kaplan, Jared and McCandlish, Sam and Henighan, Tom and Brown, Tom B and Chess, Benjamin and Child, Rewon and Gray, Scott and Radford, Alec and Wu, Jeffrey and Amodei, Dario},
+  journal={arXiv preprint arXiv:2001.08361},
+  year={2020}
+}
+
+@inproceedings{hoffmann2022chinchilla,
+  title={Training compute-optimal large language models},
+  author={Hoffmann, Jordan and Borgeaud, Sebastian and Mensch, Arthur and Buchatskaya, Elena and Cai, Trevor and Rutherford, Eliza and de Las Casas, Diego and Hendricks, Lisa Anne and Welbl, Johannes and Clark, Aidan and others},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={35},
   year={2022}
 }
 
-@mastersthesis{irfan2021discriminative,
-  title={Discriminative Splitting of LSTM-RNN Deep Neural Networks for Robust Speech Recognition},
-  author={Irfan, Muhammad},
-  school={School of Electrical Engineering and Computer Science (SEECS), National University of Sciences and Technology (NUST)},
-  address={Islamabad, Pakistan},
-  year={2021}
-}
-
+% ------------------------- Function-preserving / progressive growth ----------
 @inproceedings{chen2015net2net,
-  title={Net2Net: Accelerating learning via knowledge transfer},
+  title={{Net2Net}: Accelerating learning via knowledge transfer},
   author={Chen, Tianqi and Goodfellow, Ian and Shlens, Jonathon},
   booktitle={International Conference on Learning Representations (ICLR)},
   year={2016}
 }
 
-@article{komatsuzaki2022sparse,
-  title={Sparse upcycling: Training mixture-of-experts from dense checkpoints},
-  author={Komatsuzaki, Aran and Puigcerver, Joan and Lee-Thorp, James and Ruiz, Carlos Riquelme and Mustafa, Basil and Ainslie, Joshua and Houlsby, Neil and Dehghani, Mostafa},
-  journal={arXiv preprint arXiv:2212.05055},
+@inproceedings{wei2016morphism,
+  title={Network morphism},
+  author={Wei, Tao and Wang, Changhu and Rui, Yong and Chen, Chang Wen},
+  booktitle={Proceedings of the 33rd International Conference on Machine Learning (ICML)},
+  pages={564--572},
+  year={2016}
+}
+
+@inproceedings{gong2019stacking,
+  title={Efficient training of {BERT} by progressively stacking},
+  author={Gong, Linyuan and He, Di and Li, Zhuohan and Qin, Tao and Wang, Liwei and Liu, Tie-Yan},
+  booktitle={Proceedings of the 36th International Conference on Machine Learning (ICML)},
+  pages={2337--2346},
+  year={2019}
+}
+
+@inproceedings{chen2022bert2bert,
+  title={{bert2BERT}: Towards reusable pretrained language models},
+  author={Chen, Cheng and Yin, Yichun and Shang, Lifeng and Jiang, Xin and Qin, Yujia and Wang, Fengyu and Wang, Zhi and Chen, Xiao and Liu, Zhiyuan and Liu, Qun},
+  booktitle={Proceedings of the 60th Annual Meeting of the Association for Computational Linguistics (Volume 1: Long Papers)},
+  pages={2134--2148},
   year={2022}
 }
 
-@article{cobbe2021gsm8k,
-  title={Training verifiers to solve math word problems},
-  author={Cobbe, Karl and Kosaraju, Vineet and Bavarian, Mohammad and Chen, Mark and Jun, Heewoo and Kaiser, Lukasz and Plappert, Matthias and Tworek, Jerry and Hilton, Jacob and Nakano, Reiichiro and others},
-  journal={arXiv preprint arXiv:2110.14168},
-  year={2021}
+@inproceedings{shen2022staged,
+  title={Staged training for transformer language models},
+  author={Shen, Sheng and Walsh, Pete and Keutzer, Kurt and Dodge, Jesse and Peters, Matthew and Beltagy, Iz},
+  booktitle={Proceedings of the 39th International Conference on Machine Learning (ICML)},
+  pages={19893--19908},
+  year={2022}
 }
 
-@misc{taori2023alpaca,
-  title={Stanford Alpaca: An instruction-following LLaMA model},
-  author={Taori, Rohan and Gulrajani, Ishaan and Zhang, Tianyi and Dubois, Yann and Li, Xuechen and Guestrin, Carlos and Liang, Percy and Hashimoto, Tatsunori B},
-  year={2023},
-  publisher={GitHub repository}
+@inproceedings{wang2023ligo,
+  title={Learning to grow pretrained models for efficient transformer training},
+  author={Wang, Peihao and Panda, Rameswar and Hennigen, Lucas Torroba and Greengard, Philip and Karlinsky, Leonid and Feris, Rogerio and Cox, David Daniel and Wang, Zhangyang and Kim, Yoon},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
+}
+
+@inproceedings{yao2024msg,
+  title={Masked structural growth for 2x faster language model pre-training},
+  author={Yao, Yiqun and Zhang, Zheng and Li, Jing and Wang, Yequan},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2024}
+}
+
+@inproceedings{wang2024lemon,
+  title={{LEMON}: Lossless model expansion},
+  author={Wang, Yite and Su, Jiahao and Lu, Hanlin and Xie, Cong and Liu, Tianyi and Yuan, Jianbo and Lin, Haibin and Sun, Ruoyu and Yang, Hongxia},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2024}
+}
+
+@inproceedings{kim2024solar,
+  title={{SOLAR} 10.7{B}: Scaling large language models with simple yet effective depth up-scaling},
+  author={Kim, Dahyun and Park, Chanjun and Kim, Sanghoon and Lee, Wonsung and Song, Wonho and Kim, Yunsu and Kim, Hyeonwoo and Kim, Yungi and Kim, Hyeonju and Kim, Jihoo and others},
+  booktitle={Proceedings of the 2024 Conference of the North American Chapter of the Association for Computational Linguistics: Human Language Technologies (Volume 6: Industry Track)},
+  pages={23--35},
+  year={2024}
+}
+
+@article{samragh2024hypercloning,
+  title={Scaling smart: Accelerating large language model pre-training with small model initialization},
+  author={Samragh, Mohammad and Mirzadeh, Iman and Vahid, Keivan Alizadeh and Faghri, Fartash and Cho, Minsik and Nabi, Moin and Naik, Devang and Farajtabar, Mehrdad},
+  journal={arXiv preprint arXiv:2409.12903},
+  year={2024}
+}
+
+% ------------------------- Neuron splitting / growing ------------------------
+@inproceedings{liu2019splitting,
+  title={Splitting steepest descent for growing neural architectures},
+  author={Liu, Qiang and Wu, Lemeng and Wang, Dilin},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={32},
+  year={2019}
+}
+
+@inproceedings{wu2020firefly,
+  title={Firefly neural architecture descent: a general approach for growing neural networks},
+  author={Wu, Lemeng and Liu, Bo and Stone, Peter and Liu, Qiang},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={33},
+  year={2020}
+}
+
+@inproceedings{evci2022gradmax,
+  title={{GradMax}: Growing neural networks using gradient information},
+  author={Evci, Utku and van Merri{\"e}nboer, Bart and Unterthiner, Thomas and Vladymyrov, Max and Pedregosa, Fabian},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2022}
+}
+
+% ------------------------- Initialization ------------------------------------
+@inproceedings{glorot2010understanding,
+  title={Understanding the difficulty of training deep feedforward neural networks},
+  author={Glorot, Xavier and Bengio, Yoshua},
+  booktitle={Proceedings of the 13th International Conference on Artificial Intelligence and Statistics (AISTATS)},
+  pages={249--256},
+  year={2010}
+}
+
+@inproceedings{he2015delving,
+  title={Delving deep into rectifiers: Surpassing human-level performance on {ImageNet} classification},
+  author={He, Kaiming and Zhang, Xiangyu and Ren, Shaoqing and Sun, Jian},
+  booktitle={Proceedings of the IEEE International Conference on Computer Vision (ICCV)},
+  pages={1026--1034},
+  year={2015}
+}
+
+% ------------------------- Mixture-of-Experts --------------------------------
+@inproceedings{shazeer2017outrageously,
+  title={Outrageously large neural networks: The sparsely-gated mixture-of-experts layer},
+  author={Shazeer, Noam and Mirhoseini, Azalia and Maziarz, Krzysztof and Davis, Andy and Le, Quoc and Hinton, Geoffrey and Dean, Jeff},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2017}
+}
+
+@inproceedings{lepikhin2021gshard,
+  title={{GShard}: Scaling giant models with conditional computation and automatic sharding},
+  author={Lepikhin, Dmitry and Lee, HyoukJoong and Xu, Yuanzhong and Chen, Dehao and Firat, Orhan and Huang, Yanping and Krikun, Maxim and Shazeer, Noam and Chen, Zhifeng},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2021}
 }
 
 @article{fedus2022switch,
@@ -85,4 +256,143 @@
   number={120},
   pages={1--39},
   year={2022}
+}
+
+@inproceedings{komatsuzaki2022sparse,
+  title={Sparse upcycling: Training mixture-of-experts from dense checkpoints},
+  author={Komatsuzaki, Aran and Puigcerver, Joan and Lee-Thorp, James and Ruiz, Carlos Riquelme and Mustafa, Basil and Ainslie, Joshua and Houlsby, Neil and Dehghani, Mostafa},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
+}
+
+@article{jiang2024mixtral,
+  title={Mixtral of experts},
+  author={Jiang, Albert Q and Sablayrolles, Alexandre and Roux, Antoine and Mensch, Arthur and Savary, Blanche and Bamford, Chris and Chaplot, Devendra Singh and de las Casas, Diego and Hanna, Emma Bou and Bressand, Florian and others},
+  journal={arXiv preprint arXiv:2401.04088},
+  year={2024}
+}
+
+@article{he2024upcycling,
+  title={Upcycling large language models into mixture of experts},
+  author={He, Ethan and Khattar, Abhinav and Prenger, Ryan and Korthikanti, Vijay and Yan, Zijie and Liu, Tong and Fan, Shiqing and Aithal, Ashwath and Shoeybi, Mohammad and Catanzaro, Bryan},
+  journal={arXiv preprint arXiv:2410.07524},
+  year={2024}
+}
+
+% ------------------------- Parameter-efficient fine-tuning -------------------
+@inproceedings{hu2021lora,
+  title={{LoRA}: Low-rank adaptation of large language models},
+  author={Hu, Edward J and Shen, Yelong and Wallis, Phillip and Allen-Zhu, Zeyuan and Li, Yuanzhi and Wang, Shean and Wang, Lu and Chen, Weizhu},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2022}
+}
+
+@inproceedings{zhang2023adalora,
+  title={{AdaLoRA}: Adaptive budget allocation for parameter-efficient fine-tuning},
+  author={Zhang, Qingru and Chen, Minshuo and Bukharin, Alexander and He, Pengcheng and Cheng, Yu and Chen, Weizhu and Zhao, Tuo},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2023}
+}
+
+@inproceedings{valipour2023dylora,
+  title={{DyLoRA}: Parameter-efficient tuning of pre-trained models using dynamic search-free low-rank adaptation},
+  author={Valipour, Mojtaba and Rezagholizadeh, Mehdi and Kobyzev, Ivan and Ghodsi, Ali},
+  booktitle={Proceedings of the 17th Conference of the European Chapter of the Association for Computational Linguistics (EACL)},
+  pages={3274--3287},
+  year={2023}
+}
+
+% ------------------------- Origin of the method ------------------------------
+@mastersthesis{irfan2021discriminative,
+  title={Discriminative splitting of {LSTM-RNN} deep neural networks for robust speech recognition},
+  author={Irfan, Muhammad},
+  school={School of Electrical Engineering and Computer Science (SEECS), National University of Sciences and Technology (NUST)},
+  address={Islamabad, Pakistan},
+  year={2021}
+}
+
+% ------------------------- Datasets ------------------------------------------
+@article{cobbe2021gsm8k,
+  title={Training verifiers to solve math word problems},
+  author={Cobbe, Karl and Kosaraju, Vineet and Bavarian, Mohammad and Chen, Mark and Jun, Heewoo and Kaiser, Lukasz and Plappert, Matthias and Tworek, Jerry and Hilton, Jacob and Nakano, Reiichiro and Hesse, Christopher and Schulman, John},
+  journal={arXiv preprint arXiv:2110.14168},
+  year={2021}
+}
+
+@misc{taori2023alpaca,
+  title={Stanford {Alpaca}: An instruction-following {LLaMA} model},
+  author={Taori, Rohan and Gulrajani, Ishaan and Zhang, Tianyi and Dubois, Yann and Li, Xuechen and Guestrin, Carlos and Liang, Percy and Hashimoto, Tatsunori B},
+  howpublished={GitHub repository, \url{https://github.com/tatsu-lab/stanford_alpaca}},
+  year={2023}
+}
+
+@misc{yahma2023alpacacleaned,
+  title={Alpaca-Cleaned: A cleaned and curated version of the {Stanford Alpaca} dataset},
+  author={{yahma}},
+  howpublished={Hugging Face Datasets, \url{https://huggingface.co/datasets/yahma/alpaca-cleaned}},
+  year={2023}
+}
+
+% ------------------------- Evaluation & optimization -------------------------
+@article{jelinek1977perplexity,
+  title={Perplexity---a measure of the difficulty of speech recognition tasks},
+  author={Jelinek, Fred and Mercer, Robert L and Bahl, Lalit R and Baker, James K},
+  journal={The Journal of the Acoustical Society of America},
+  volume={62},
+  number={S1},
+  pages={S63--S63},
+  year={1977}
+}
+
+@inproceedings{kingma2015adam,
+  title={Adam: A method for stochastic optimization},
+  author={Kingma, Diederik P and Ba, Jimmy},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2015}
+}
+
+@inproceedings{loshchilov2019adamw,
+  title={Decoupled weight decay regularization},
+  author={Loshchilov, Ilya and Hutter, Frank},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2019}
+}
+
+@article{chen2016checkpointing,
+  title={Training deep nets with sublinear memory cost},
+  author={Chen, Tianqi and Xu, Bing and Zhang, Chiyuan and Guestrin, Carlos},
+  journal={arXiv preprint arXiv:1604.06174},
+  year={2016}
+}
+
+@inproceedings{micikevicius2018mixed,
+  title={Mixed precision training},
+  author={Micikevicius, Paulius and Narang, Sharan and Alben, Jonah and Diamos, Gregory and Elsen, Erich and Garcia, David and Ginsburg, Boris and Houston, Michael and Kuchaiev, Oleksii and Venkatesh, Ganesh and Wu, Hao},
+  booktitle={International Conference on Learning Representations (ICLR)},
+  year={2018}
+}
+
+% ------------------------- Software ------------------------------------------
+@inproceedings{paszke2019pytorch,
+  title={{PyTorch}: An imperative style, high-performance deep learning library},
+  author={Paszke, Adam and Gross, Sam and Massa, Francisco and Lerer, Adam and Bradbury, James and Chanan, Gregory and Killeen, Trevor and Lin, Zeming and Gimelshein, Natalia and Antiga, Luca and others},
+  booktitle={Advances in Neural Information Processing Systems},
+  volume={32},
+  year={2019}
+}
+
+@inproceedings{wolf2020transformers,
+  title={Transformers: State-of-the-art natural language processing},
+  author={Wolf, Thomas and Debut, Lysandre and Sanh, Victor and Chaumond, Julien and Delangue, Clement and Moi, Anthony and Cistac, Pierric and Rault, Tim and Louf, R{\'e}mi and Funtowicz, Morgan and others},
+  booktitle={Proceedings of the 2020 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
+  pages={38--45},
+  year={2020}
+}
+
+@inproceedings{lhoest2021datasets,
+  title={Datasets: A community library for natural language processing},
+  author={Lhoest, Quentin and Villanova del Moral, Albert and Jernite, Yacine and Thakur, Abhishek and von Platen, Patrick and Patil, Suraj and Chaumond, Julien and Drame, Mariama and Plu, Julien and Tunstall, Lewis and others},
+  booktitle={Proceedings of the 2021 Conference on Empirical Methods in Natural Language Processing: System Demonstrations},
+  pages={175--184},
+  year={2021}
 }
