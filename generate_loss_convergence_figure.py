@@ -3,7 +3,7 @@
 Render the per-step fine-tuning loss figure (paper Figure "loss convergence")
 from the loss histories written by the Kaggle benchmark notebook.
 
-The notebook (Parameter_Splitting_LLM_Kaggle.ipynb, benchmark cell) writes
+The notebooks (Parameter_Splitting_LLM_Kaggle_part1/part2.ipynb, benchmark cell) write
 ``loss_histories.json`` with keys of the form
     "<model> | <task> | <method> | seed<N>"
 and a list of per-step training losses as values. Seeds are averaged and

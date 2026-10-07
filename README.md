@@ -123,9 +123,11 @@ All code, unit tests, benchmarks, and interactive notebooks have been implemente
 - Thesis Adjacent Directory: [parameter splitting/llm_adaptation](file:///C:/Users/Minahil%20Aman/Documents/parameter%20splitting/llm_adaptation)
 
 ### File Inventory:
-1. [Parameter_Splitting_LLM_Kaggle.ipynb](file:///C:/Users/Minahil%20Aman/Documents/parameter-splitting-llm/Parameter_Splitting_LLM_Kaggle.ipynb):
-   - Fully interactive, self-contained notebook ready for direct upload to **Kaggle** or **Google Colab**.
-   - Verified top-to-bottom: 8/8 code cells execute with 0 errors.
+1. [Parameter_Splitting_LLM_Kaggle_part1.ipynb](Parameter_Splitting_LLM_Kaggle_part1.ipynb) and [Parameter_Splitting_LLM_Kaggle_part2.ipynb](Parameter_Splitting_LLM_Kaggle_part2.ipynb):
+   - Self-contained Kaggle notebooks (2x T4) that split the benchmark into two sessions; they are identical except for `RUN_GROUP`.
+   - **Part 1:** Qwen2.5-0.5B, SmolLM-360M, SmolLM2-360M, TinyLlama-1.1B (plus a bf16 SmolLM-360M bridge run) and the ablations; writes `results_part1/`.
+   - **Part 2:** Llama-3.2-1B (needs an `HF_TOKEN` Kaggle secret), OLMo-2-1B, Qwen2.5-1.5B, SmolLM2-1.7B; writes `results_part2/`.
+   - Run `PRESET = "QUICK"` first in each to measure per-run time, then `"FULL"`.
 2. [layers.py](file:///C:/Users/Minahil%20Aman/Documents/parameter-splitting-llm/llm_parameter_splitting/layers.py):
    - PyTorch implementations of `SplitSwiGLU`, `SplitMoE`, `SplitLoRALinear`, and `SplitLinear`.
 3. [noise.py](file:///C:/Users/Minahil%20Aman/Documents/parameter-splitting-llm/llm_parameter_splitting/noise.py):
