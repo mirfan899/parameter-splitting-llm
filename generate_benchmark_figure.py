@@ -1,198 +1,123 @@
 #!/usr/bin/env python3
 """
-Generate publication-quality empirical benchmark figures for DPS-LLM paper.
-Generates two separate standalone figures specifically designed to fit into
-single-column widths (\\columnwidth) in two-column conference formats like ACL.
+Render the ACL paper's benchmark summary figure (multi_model_benchmark_comparison.png)
+from the per-seed results written by the Kaggle benchmark notebook.
+
+    python generate_benchmark_figure.py results/full_2026-10-06 [more result dirs ...]
+
+reads <dir>/benchmark_results.csv from every directory (one per Kaggle model group) and writes a full-width, two-panel figure:
+  (a) relative validation-perplexity reduction per growth method,
+      mean +/- std over seeds with the individual seeds as dots;
+  (b) per-seed paired difference of each noisy split from exact duplication
+      (naive split), with the mean and the paired t-test p-value.
+Any number of models and datasets is supported; groups follow the CSV order.
 """
+import sys
+from pathlib import Path
 
 import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+from scipy.stats import ttest_rel
 
-# Set publication style
-plt.rcParams['font.family'] = 'DejaVu Sans'
-plt.rcParams['axes.linewidth'] = 1.2
-plt.rcParams['axes.edgecolor'] = '#334155'
-plt.rcParams['grid.color'] = '#e2e8f0'
-plt.rcParams['grid.linestyle'] = '--'
-plt.rcParams['grid.alpha'] = 0.7
+ROOT = Path(__file__).resolve().parent
+OUTPUTS = [ROOT / "paper" / "multi_model_benchmark_comparison.png",
+           ROOT / "multi_model_benchmark_comparison.png"]
 
-benchmarks = [
-    'Qwen2.5-0.5B\n(GSM8K)',
-    'SmolLM-360M\n(GSM8K)',
-    'Qwen2.5-0.5B\n(Alpaca)',
-    'SmolLM-360M\n(Alpaca)'
+METHODS = [  # CSV label -> (legend label, colour); colours shared with generate_loss_convergence_figure.py
+    ("Base (no split)", "Base (no split)", "#6D28D9"),
+    ("Base (2x W_down lr)", "Base, 2$\\times$ lr on $W_{down}$", "#64748B"),
+    ("Naive split", "Naive split ($C=0$)", "#D97706"),
+    ("Gaussian split", "Gaussian split", "#0891B2"),
+    ("DPS-LLM", "DPS-LLM (ours)", "#2563EB"),
 ]
+NOISY = [("DPS-LLM", "DPS-LLM $-$ naive", "#2563EB"), ("Gaussian split", "Gaussian $-$ naive", "#0891B2")]
+INK, INK_MUTED, GRID = "#1E293B", "#64748B", "#E2E8F0"
 
-base_drops = [20.43, 1.03, 25.34, 0.71]
-naive_drops = [13.83, 1.94, 24.03, 1.85]
-dps_drops   = [14.09, 2.01, 24.12, 2.28]
-
-c_base = '#6D28D9'    # Violet (validated categorical slot 1)
-c_naive = '#D97706'   # Amber (validated categorical slot 2)
-c_dps = '#2563EB'     # Blue (validated categorical slot 3)
-c_margin = c_dps      # the margin belongs to DPS-LLM, so it wears its colour
-
-# ==============================================================================
-# Figure 1: Perplexity Improvement (% PPL Drop) - Single Column Optimized
-# ==============================================================================
-fig1, ax1 = plt.subplots(figsize=(7.2, 4.6), dpi=300)
-
-x = np.arange(len(benchmarks))
-width = 0.26
-
-rects1 = ax1.bar(x - width, base_drops, width, label='Base (Original)', color=c_base, edgecolor='#334155', linewidth=0.8, zorder=3)
-rects2 = ax1.bar(x, naive_drops, width, label='Naive Split (Exact)', color=c_naive, edgecolor='#92400E', linewidth=0.8, zorder=3)
-rects3 = ax1.bar(x + width, dps_drops, width, label='DPS-LLM (Ours)', color=c_dps, edgecolor='#1d4ed8', linewidth=0.8, zorder=3)
-
-# Value labels on top of bars with clean tilt
-for i in range(len(benchmarks)):
-    ax1.annotate(f'{base_drops[i]:.2f}%',
-                 xy=(rects1[i].get_x() + rects1[i].get_width() / 2, base_drops[i]),
-                 xytext=(-1, 3), textcoords="offset points",
-                 ha='center', va='bottom', fontsize=8.5, fontweight='medium', color='#334155',
-                 rotation=20)
-    ax1.annotate(f'{naive_drops[i]:.2f}%',
-                 xy=(rects2[i].get_x() + rects2[i].get_width() / 2, naive_drops[i]),
-                 xytext=(-1, 3), textcoords="offset points",
-                 ha='center', va='bottom', fontsize=8.5, fontweight='medium', color='#334155',
-                 rotation=20)
-    ax1.annotate(f'{dps_drops[i]:.2f}%',
-                 xy=(rects3[i].get_x() + rects3[i].get_width() / 2, dps_drops[i]),
-                 xytext=(-1, 3), textcoords="offset points",
-                 ha='center', va='bottom', fontsize=8.5, fontweight='bold', color='#334155',
-                 rotation=20)
-
-ax1.set_title('Validation Perplexity Improvement (% PPL Drop)', fontsize=11.5, fontweight='bold', pad=10, color='#0f172a')
-ax1.set_ylabel('Perplexity Drop (%) [Higher is Better]', fontsize=10, fontweight='bold', color='#1e293b')
-ax1.set_xticks(x)
-ax1.set_xticklabels(benchmarks, fontsize=9.5, fontweight='medium')
-ax1.set_ylim(0, 31)
-ax1.grid(axis='y', zorder=0)
-ax1.legend(loc='upper right', framealpha=0.92, edgecolor='#cbd5e1', fontsize=8.5)
-
-# Alternating subtle background bands
-ax1.axvspan(0.5, 1.5, color='#f8fafc', alpha=0.9, zorder=1)
-ax1.axvspan(2.5, 3.5, color='#f8fafc', alpha=0.9, zorder=1)
-
-fig1.tight_layout()
-fig1_path_paper = '/home/iffi/Documents/Github/parameter-splitting-llm/paper/benchmark_ppl_comparison.png'
-fig1_path_root  = '/home/iffi/Documents/Github/parameter-splitting-llm/benchmark_ppl_comparison.png'
-fig1.savefig(fig1_path_paper, dpi=300, bbox_inches='tight')
-fig1.savefig(fig1_path_root, dpi=300, bbox_inches='tight')
-plt.close(fig1)
-
-# ==============================================================================
-# Figure 2: Symmetry-Breaking Margin (DPS-LLM vs. exact duplication) - single column
-# ==============================================================================
-INK, INK_MUTED, GRID = '#1E293B', '#64748B', '#E2E8F0'
-dps_margins = [dps_drops[i] - naive_drops[i] for i in range(4)]
-ratio_to_base = [d / b for d, b in zip(dps_drops, base_drops)]
-
-fig2, ax2 = plt.subplots(figsize=(7.4, 4.3), dpi=300)
-y_pos = np.arange(4)[::-1]                       # same order as the grouped bars, top to bottom
-y_labels = [b.replace('\n', ' ') for b in benchmarks]
-bars = ax2.barh(y_pos, dps_margins, height=0.5, color=c_dps, linewidth=0, zorder=3)
-for bar, margin in zip(bars, dps_margins):
-    ax2.annotate(f'+{margin:.2f} pp', xy=(bar.get_width(), bar.get_y() + bar.get_height() / 2),
-                 xytext=(5, 0), textcoords='offset points', ha='left', va='center',
-                 fontsize=9.5, color=INK, zorder=4)
-ax2.set_yticks(y_pos)
-ax2.set_yticklabels(y_labels, fontsize=9.5, color=INK)
-ax2.set_xlim(0, 0.56)
-ax2.set_xticks([0, 0.1, 0.2, 0.3, 0.4, 0.5])
-ax2.set_xlabel('Margin over naive split (percentage points of PPL reduction)', fontsize=9.5, color=INK)
-ax2.set_title('DPS-LLM margin over exact duplication', fontsize=11, fontweight='bold', color=INK, loc='left', pad=10)
-ax2.grid(axis='x', color=GRID, linestyle='-', linewidth=0.8, zorder=0)
-ax2.set_axisbelow(True)
-for side in ('top', 'right'):
-    ax2.spines[side].set_visible(False)
-for side in ('left', 'bottom'):
-    ax2.spines[side].set_color('#94A3B8'); ax2.spines[side].set_linewidth(0.8)
-ax2.tick_params(colors=INK, labelsize=9, length=3, width=0.8)
-ax2.tick_params(axis='y', length=0)
-ax2.text(1.02, 1.0, 'DPS ÷ Base', transform=ax2.transAxes, ha='left', va='bottom',
-         fontsize=9, color=INK_MUTED, fontweight='bold')
-for y, rt in zip(y_pos, ratio_to_base):
-    ax2.text(1.02, y, f'{rt:.2f}×', transform=ax2.get_yaxis_transform(), ha='left', va='center',
-             fontsize=9.5, color=INK if rt > 1 else INK_MUTED, fontweight='bold' if rt > 1 else 'normal')
-
-fig2.subplots_adjust(left=0.24, right=0.86, bottom=0.16, top=0.88)
-fig2_path_paper = '/home/iffi/Documents/Github/parameter-splitting-llm/paper/benchmark_symmetry_margin.png'
-fig2_path_root  = '/home/iffi/Documents/Github/parameter-splitting-llm/benchmark_symmetry_margin.png'
-fig2.savefig(fig2_path_paper, dpi=300, bbox_inches='tight', facecolor='white')
-fig2.savefig(fig2_path_root, dpi=300, bbox_inches='tight', facecolor='white')
-plt.close(fig2)
-
-# ==============================================================================
-# Figure 3: Composite two-panel figure used in the paper (figure*, full width)
-#   (a) grouped bars of relative PPL reduction per condition
-#   (b) horizontal bars of the DPS-LLM margin over exact duplication, with the
-#       DPS / Base ratio as an aligned text column
-# ==============================================================================
-fig3, (axa, axb) = plt.subplots(1, 2, figsize=(14.0, 4.6), dpi=300,
-                                gridspec_kw={'width_ratios': [1.35, 1.0], 'wspace': 0.28})
 
 def clean_axes(ax):
-    for side in ('top', 'right'):
+    for side in ("top", "right"):
         ax.spines[side].set_visible(False)
-    for side in ('left', 'bottom'):
-        ax.spines[side].set_color('#94A3B8')
+    for side in ("left", "bottom"):
+        ax.spines[side].set_color("#94A3B8")
         ax.spines[side].set_linewidth(0.8)
     ax.tick_params(colors=INK, labelsize=9, length=3, width=0.8)
 
-# ---- (a) grouped bars --------------------------------------------------------
-xa = np.arange(len(benchmarks))
-bw = 0.24
-series = [('Base (no split)', base_drops, c_base),
-          ('Naive split ($C=0$)', naive_drops, c_naive),
-          ('DPS-LLM (ours)', dps_drops, c_dps)]
-for k, (label, vals, colour) in enumerate(series):
-    pos = xa + (k - 1) * (bw + 0.02)
-    rects = axa.bar(pos, vals, bw, label=label, color=colour, linewidth=0, zorder=3)
-    for r, v in zip(rects, vals):
-        axa.annotate(f'{v:.2f}', xy=(r.get_x() + r.get_width() / 2, v), xytext=(0, 3),
-                     textcoords='offset points', ha='center', va='bottom',
-                     fontsize=8, color=INK, zorder=4)
-axa.set_xticks(xa)
-axa.set_xticklabels([b.replace('\n', '\n') for b in benchmarks], fontsize=9.5, color=INK)
-axa.set_ylabel('Relative PPL reduction (%)', fontsize=10, color=INK)
-axa.set_ylim(0, 30)
-axa.set_yticks([0, 10, 20, 30])
-axa.grid(axis='y', color=GRID, linestyle='-', linewidth=0.8, zorder=0)
-axa.set_axisbelow(True)
-axa.legend(loc='upper left', frameon=False, fontsize=9, ncol=1, handlelength=1.2, handleheight=0.9)
-axa.set_title('(a) Validation perplexity reduction after fine-tuning', fontsize=11, fontweight='bold', color=INK, loc='left', pad=10)
-clean_axes(axa)
 
-# ---- (b) margin over naive duplication ---------------------------------------
-yb = np.arange(len(benchmarks))[::-1]           # same order as (a), top to bottom
-labels_b = [b.replace('\n', ' ') for b in benchmarks]
-bars_b = axb.barh(yb, dps_margins, height=0.5, color=c_dps, linewidth=0, zorder=3)
-for r, m in zip(bars_b, dps_margins):
-    axb.annotate(f'+{m:.2f} pp', xy=(r.get_width(), r.get_y() + r.get_height() / 2), xytext=(5, 0),
-                 textcoords='offset points', ha='left', va='center', fontsize=9, color=INK, zorder=4)
-axb.set_yticks(yb)
-axb.set_yticklabels(labels_b, fontsize=9.5, color=INK)
-axb.set_xlim(0, 0.56)
-axb.set_xticks([0, 0.1, 0.2, 0.3, 0.4, 0.5])
-axb.set_xlabel('Margin over naive split (percentage points of PPL reduction)', fontsize=9.5, color=INK)
-axb.grid(axis='x', color=GRID, linestyle='-', linewidth=0.8, zorder=0)
-axb.set_axisbelow(True)
-axb.set_title('(b) DPS-LLM margin over exact duplication', fontsize=11, fontweight='bold', color=INK, loc='left', pad=10)
-clean_axes(axb)
-axb.tick_params(axis='y', length=0)
-# aligned text column: ratio of DPS-LLM reduction to the base model's reduction
-axb.text(1.02, 1.0, 'DPS ÷ Base', transform=axb.transAxes, ha='left', va='bottom',
-         fontsize=9, color=INK_MUTED, fontweight='bold')
-for y, rt in zip(yb, ratio_to_base):
-    axb.text(1.02, y, f'{rt:.2f}×', transform=axb.get_yaxis_transform(), ha='left', va='center',
-             fontsize=9.5, color=INK if rt > 1 else INK_MUTED,
-             fontweight='bold' if rt > 1 else 'normal')
+def main(*results_dirs: str) -> None:
+    df = pd.concat([pd.read_csv(Path(d) / "benchmark_results.csv") for d in results_dirs], ignore_index=True)
+    groups = list(dict.fromkeys(zip(df.Model, df.Dataset)))
+    groups.sort(key=lambda g: list(dict.fromkeys(df.Dataset)).index(g[1]))   # datasets together
+    plt.rcParams["font.family"] = "DejaVu Sans"
+    fig, (axa, axb) = plt.subplots(1, 2, figsize=(14.0, 4.6), dpi=300,
+                                   gridspec_kw={"width_ratios": [1.35, 1.0], "wspace": 0.30})
 
-fig3.subplots_adjust(left=0.06, right=0.94, bottom=0.17, top=0.88)
-fig3_path_paper = '/home/iffi/Documents/Github/parameter-splitting-llm/paper/multi_model_benchmark_comparison.png'
-fig3_path_root  = '/home/iffi/Documents/Github/parameter-splitting-llm/multi_model_benchmark_comparison.png'
-fig3.savefig(fig3_path_paper, dpi=300, bbox_inches='tight', facecolor='white')
-fig3.savefig(fig3_path_root, dpi=300, bbox_inches='tight', facecolor='white')
-plt.close(fig3)
-print(f" 3. {fig3_path_paper}")
+    # ---- (a) relative PPL reduction, mean +/- std with seeds as dots ------------
+    methods = [m for m in METHODS if m[0] in set(df.Method)]
+    xa = np.arange(len(groups))
+    bw = 0.8 / len(methods)
+    for k, (key, label, colour) in enumerate(methods):
+        pos = xa + (k - (len(methods) - 1) / 2) * bw
+        per_group = [df[(df.Model == m) & (df.Dataset == d) & (df.Method == key)].PPLDrop.to_numpy() for m, d in groups]
+        means = [v.mean() for v in per_group]
+        stds = [v.std(ddof=1) if len(v) > 1 else 0.0 for v in per_group]
+        axa.bar(pos, means, bw * 0.92, yerr=stds, label=label, color=colour, linewidth=0, zorder=3,
+                error_kw=dict(ecolor=INK, elinewidth=0.9, capsize=2.5, capthick=0.9))
+        for p, v in zip(pos, per_group):
+            axa.scatter(np.full(len(v), p), v, s=7, color="white", edgecolor=INK, linewidth=0.5, zorder=4)
+        for p, mu, sd in zip(pos, means, stds):
+            axa.annotate(f"{mu:.1f}", xy=(p, mu + sd), xytext=(0, 2), textcoords="offset points",
+                         ha="center", va="bottom", fontsize=7, color=INK, zorder=5)
+    axa.set_xticks(xa)
+    axa.set_xticklabels([f"{m}\n({d})" for m, d in groups], fontsize=9.5, color=INK)
+    axa.set_ylabel("Relative PPL reduction (%)", fontsize=10, color=INK)
+    axa.set_ylim(0, df.PPLDrop.max() * 1.18)
+    axa.grid(axis="y", color=GRID, linestyle="-", linewidth=0.8, zorder=0)
+    axa.set_axisbelow(True)
+    axa.legend(loc="upper left", frameon=False, fontsize=8.5, ncol=2, handlelength=1.2, handleheight=0.9)
+    n_seeds = df.Seed.nunique()
+    axa.set_title(f"(a) Validation perplexity reduction (mean $\\pm$ std, {n_seeds} seeds)",
+                  fontsize=11, fontweight="bold", color=INK, loc="left", pad=10)
+    clean_axes(axa)
+
+    # ---- (b) paired difference from exact duplication --------------------------------
+    yb = np.arange(len(groups))[::-1]
+    off = 0.16
+    for j, (key, label, colour) in enumerate(NOISY):
+        for y, (m, d) in zip(yb, groups):
+            sub = df[(df.Model == m) & (df.Dataset == d)].pivot(index="Seed", columns="Method", values="PPLDrop")
+            diff = (sub[key] - sub["Naive split"]).dropna().to_numpy()
+            yy = y + (off if j == 0 else -off)
+            axb.scatter(diff, np.full(len(diff), yy), s=16, color=colour, alpha=0.45, linewidth=0, zorder=3)
+            axb.scatter([diff.mean()], [yy], s=46, marker="D", color=colour, edgecolor="white", linewidth=0.6,
+                        zorder=4, label=label if y == yb[0] else None)
+            if key == "DPS-LLM" and len(diff) > 1:
+                p = ttest_rel(sub.loc[sub[key].notna(), key], sub.loc[sub[key].notna(), "Naive split"]).pvalue
+                axb.text(1.02, y, f"p={p:.2f}", transform=axb.get_yaxis_transform(), ha="left", va="center",
+                         fontsize=9, color=INK)
+    axb.axvline(0, color=INK_MUTED, linewidth=1.0, zorder=2)
+    axb.set_yticks(yb)
+    axb.set_yticklabels([f"{m} ({d})" for m, d in groups], fontsize=9.5, color=INK)
+    lim = max(abs(np.array(axb.get_xlim()))) * 1.05
+    axb.set_xlim(-lim, lim)
+    axb.set_xlabel("Difference from naive split (percentage points of PPL reduction)", fontsize=9.5, color=INK)
+    axb.grid(axis="x", color=GRID, linestyle="-", linewidth=0.8, zorder=0)
+    axb.set_axisbelow(True)
+    axb.set_title("(b) Noisy splits vs. exact duplication, per seed", fontsize=11, fontweight="bold",
+                  color=INK, loc="left", pad=10)
+    axb.text(1.02, 1.0, "DPS vs naive", transform=axb.transAxes, ha="left", va="bottom",
+             fontsize=8.5, color=INK_MUTED, fontweight="bold")
+    axb.legend(loc="upper right", frameon=False, fontsize=8.5, handletextpad=0.3)
+    clean_axes(axb)
+    axb.tick_params(axis="y", length=0)
+
+    fig.subplots_adjust(left=0.06, right=0.93, bottom=0.17, top=0.88)
+    for out in OUTPUTS:
+        fig.savefig(out, dpi=300, bbox_inches="tight", facecolor="white")
+        print(f"wrote {out}")
+
+
+if __name__ == "__main__":
+    if len(sys.argv) < 2:
+        sys.exit(__doc__)
+    main(*sys.argv[1:])

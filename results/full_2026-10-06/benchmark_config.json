@@ -1,0 +1,38 @@
+{
+  "preset": "FULL",
+  "LR": 2e-05,
+  "BATCH_SIZE": 1,
+  "ACCUM_STEPS": 2,
+  "MAX_LEN": 256,
+  "GRAD_CLIP": 1.0,
+  "C_SCALE": 0.0001,
+  "SYM_EVERY": 25,
+  "ACC_MAX_NEW_TOKENS": 256,
+  "ACC_BATCH": 8,
+  "DATA_SEED": 0,
+  "SEEDS": [
+    42,
+    43,
+    44
+  ],
+  "STEPS": 200,
+  "TRAIN_EXAMPLES": 512,
+  "EVAL_EXAMPLES": 200,
+  "ACC_EXAMPLES": 100,
+  "models": [
+    {
+      "name": "Qwen2.5-0.5B",
+      "id": "Qwen/Qwen2.5-0.5B-Instruct"
+    },
+    {
+      "name": "SmolLM-360M",
+      "id": "HuggingFaceTB/SmolLM-360M-Instruct"
+    }
+  ],
+  "methods": [
+    "Base (no split)",
+    "Naive split",
+    "Gaussian split",
+    "DPS-LLM"
+  ]
+}

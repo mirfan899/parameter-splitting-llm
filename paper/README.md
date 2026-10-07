@@ -17,25 +17,32 @@ This directory contains **publication-ready LaTeX manuscripts**, **BibTeX biblio
 
 ---
 
-## 📊 Core Empirical Findings Included in the Paper
+## 📊 Core Empirical Findings Included in the ACL Paper
 
-All twelve runs share one recipe: Kaggle 2×T4, bfloat16, AdamW (lr 2e-5), 25 steps (batch 1, accumulation 2), 128-token sequences, only the SwiGLU MLP parameters trainable, 30 fine-tuning / 10 held-out examples per dataset, seed 42. *PPL Drop* is the relative perplexity reduction; *3.2×* is the ratio of that reduction to the unexpanded model's, not a wall-clock speed-up.
+Source: `results/full_2026-10-06/` (Kaggle 2×T4, notebook as of commit `47fe37b`, `PRESET="FULL"`). All 48 runs share one recipe: pure bfloat16, AdamW (lr 2e-5), 200 steps (batch 1, accumulation 2), 256-token sequences, only the SwiGLU MLP trainable, 512 fine-tuning / 200 validation sequences, seeds 42–43–44. *PPL red.* is the relative perplexity reduction (mean ± std); *Acc.* is GSM8K exact match on 100 test problems.
 
-### Table 1: Multi-Model & Multi-Dataset Empirical Benchmark (Kaggle T4 Verified)
-| Model Architecture | Evaluation Dataset | Growth Method | Parameters | Init PPL | Final PPL | PPL Drop (%) | Key Takeaway |
-| :--- | :--- | :--- | :---: | :---: | :---: | :---: | :--- |
-| **Qwen 2.5** | **Math (GSM8K)** | Base (Original) | 494.0M | 1.91 | 1.52 | +20.43% | Baseline capacity |
-| *(Alibaba Research)* | | Naive Split (Duplication) | 807.8M | 1.91 | 1.64 | +13.83% | Symmetric gradient stall |
-| | | **DPS-LLM (Our Method)** | 807.8M | **1.91** | **1.64** | **+14.09%** | **DPS wins (+0.26%)** |
-| **SmolLM** | **Math (GSM8K)** | Base (Original) | 361.8M | 6.31 | 6.25 | +1.03% | Capacity saturated |
-| *(Hugging Face)* | | Naive Split (Duplication) | 597.8M | 6.30 | 6.18 | +1.94% | Split relieves saturation |
-| | | **DPS-LLM (Our Method)** | 597.8M | **6.31** | **6.18** | **+2.01%** | **$\approx 2\times$ faster adaptation** |
-| **Qwen 2.5** | **Instruction (Alpaca)** | Base (Original) | 494.0M | 7.29 | 5.44 | +25.34% | Baseline adaptation |
-| *(Alibaba Research)* | | Naive Split (Duplication) | 807.8M | 7.29 | 5.54 | +24.03% | Duplication lag |
-| | | **DPS-LLM (Our Method)** | 807.8M | **7.28** | **5.53** | **+24.12%** | **DPS wins (+0.09%)** |
-| **SmolLM** | **Instruction (Alpaca)** | Base (Original) | 361.8M | 8.88 | 8.81 | +0.71% | Severe capacity limit |
-| *(Hugging Face)* | | Naive Split (Duplication) | 597.8M | 8.86 | 8.70 | +1.85% | Capacity doubled |
-| | | **DPS-LLM (Our Method)** | 597.8M | **8.86** | **8.66** | **+2.28%** | **$\mathbf{3.2\times}$ learning acceleration!** |
+| Model | Dataset | Base | Naive split | Gaussian split | DPS-LLM | DPS vs naive (paired) |
+| :--- | :--- | :---: | :---: | :---: | :---: | :---: |
+| Qwen2.5-0.5B | GSM8K PPL red. | 11.18 ± 1.12 | 12.67 ± 0.31 | 11.82 ± 0.41 | 11.94 ± 0.58 | −0.73 pp, 1/3 wins, p=0.29 |
+| Qwen2.5-0.5B | GSM8K Acc. | **23.0 ± 2.6** | 13.7 ± 6.7 | 12.7 ± 4.2 | 12.3 ± 9.0 | |
+| SmolLM-360M | GSM8K PPL red. | 5.25 ± 0.14 | 10.52 ± 0.29 | 10.51 ± 0.29 | 10.50 ± 0.39 | −0.02 pp, 2/3 wins, p=0.73 |
+| SmolLM-360M | GSM8K Acc. | 3.7 ± 1.5 | 2.7 ± 0.6 | 3.3 ± 1.2 | 3.3 ± 1.2 | |
+| Qwen2.5-0.5B | Alpaca PPL red. | **27.74 ± 0.28** | 25.57 ± 0.28 | 25.69 ± 0.23 | 25.68 ± 0.34 | +0.11 pp, 3/3 wins, p=0.09 |
+| SmolLM-360M | Alpaca PPL red. | 4.57 ± 0.05 | 11.39 ± 0.18 | 11.45 ± 0.09 | 11.36 ± 0.16 | −0.03 pp, 1/3 wins, p=0.56 |
+
+Takeaways:
+* **Invariance holds**: init PPL is within 0.012 of the base model; dropping the ½ factor raises it from 5.27 to 14.85.
+* **Symmetry breaking does not happen in bfloat16**: the two copies of every neuron keep cosine similarity 1.0000 for the whole run at C=1e-4, so DPS-LLM, Gaussian noise and naive duplication are statistically indistinguishable.
+* **Splitting ≠ capacity here**: SmolLM's ~2× larger PPL reduction appears for all three split variants. Under AdamW an exact split trains like the unsplit model with a **2× learning rate on W_down** (each down-projection copy gets the full gradient and the copies add up; verified on a toy SwiGLU block and in the notebook pipeline), and this protocol is learning-rate-limited. The notebook now runs that matched control.
+* **Accuracy drops**: splitting lowers Qwen2.5-0.5B GSM8K accuracy from 23% to 12–14% (every seed).
+
+The ICLR, COLM and TMLR manuscripts and the two single-column figures they use (`benchmark_ppl_comparison.png`, `benchmark_symmetry_margin.png`) still describe the earlier single-seed, 25-step run and have not been updated.
+
+### Regenerating the figures
+```bash
+python generate_benchmark_figure.py results/full_2026-10-06            # multi_model_benchmark_comparison.png
+python generate_loss_convergence_figure.py results/full_2026-10-06/loss_histories.json   # benchmark_loss_convergence.png
+```
 
 ---
 
@@ -50,8 +57,8 @@ All twelve runs share one recipe: Kaggle 2×T4, bfloat16, AdamW (lr 2e-5), 25 st
 * **[`dps_llm_training_curve.png`](dps_llm_training_curve.png)**: Embedded 300 DPI training convergence plot.
 * **[`benchmark_ppl_comparison.png`](benchmark_ppl_comparison.png)**: Single-column 300 DPI perplexity improvement comparison plot.
 * **[`benchmark_symmetry_margin.png`](benchmark_symmetry_margin.png)**: Single-column 300 DPI symmetry-breaking advantage and capacity relief plot.
-* **[`multi_model_benchmark_comparison.png`](multi_model_benchmark_comparison.png)**: Wide two-panel composite comparison figure.
-* **[`benchmark_loss_convergence.png`](benchmark_loss_convergence.png)**: Per-step fine-tuning loss on Qwen2.5-0.5B (exported from the Kaggle run). The raw loss histories were not saved for that run; the benchmark notebook now writes `loss_histories.json` and `benchmark_results.csv`, and `python ../generate_loss_convergence_figure.py loss_histories.json` regenerates this figure at 300 DPI as a two-panel plot.
+* **[`multi_model_benchmark_comparison.png`](multi_model_benchmark_comparison.png)**: Wide two-panel figure: PPL reduction per method (mean ± std, seeds as dots) and per-seed difference of the noisy splits from naive duplication, rendered from `results/full_2026-10-06/benchmark_results.csv`.
+* **[`benchmark_loss_convergence.png`](benchmark_loss_convergence.png)**: Training loss on Qwen2.5-0.5B (10-step moving average, mean ± std over seeds), rendered from `results/full_2026-10-06/loss_histories.json`.
 
 ---
 
