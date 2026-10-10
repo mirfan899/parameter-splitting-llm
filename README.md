@@ -123,10 +123,11 @@ All code, unit tests, benchmarks, and interactive notebooks have been implemente
 - Thesis Adjacent Directory: [parameter splitting/llm_adaptation](file:///C:/Users/Minahil%20Aman/Documents/parameter%20splitting/llm_adaptation)
 
 ### File Inventory:
-1. [Parameter_Splitting_LLM_Kaggle_part1.ipynb](Parameter_Splitting_LLM_Kaggle_part1.ipynb) and [Parameter_Splitting_LLM_Kaggle_part2.ipynb](Parameter_Splitting_LLM_Kaggle_part2.ipynb):
-   - Self-contained Kaggle notebooks (2x T4) that split the benchmark into two sessions; they are identical except for `RUN_GROUP`.
+1. [Parameter_Splitting_LLM_Kaggle_part1.ipynb](Parameter_Splitting_LLM_Kaggle_part1.ipynb), [part2a](Parameter_Splitting_LLM_Kaggle_part2a.ipynb) and [part2b](Parameter_Splitting_LLM_Kaggle_part2b.ipynb):
+   - Self-contained Kaggle notebooks (2x T4), one per session; identical except for `RUN_GROUP`. No run starts after 11 h, so output is always saved.
    - **Part 1:** Qwen2.5-0.5B, SmolLM-360M, SmolLM2-360M, TinyLlama-1.1B (plus a bf16 SmolLM-360M bridge run) and the ablations; writes `results_part1/`.
-   - **Part 2:** Llama-3.2-1B (needs an `HF_TOKEN` Kaggle secret), OLMo-2-1B, Qwen2.5-1.5B, SmolLM2-1.7B; writes `results_part2/`.
+   - **Part 2a:** Llama-3.2-1B (needs an `HF_TOKEN` Kaggle secret), OLMo-2-1B; writes `results_part2a/`.
+   - **Part 2b:** Qwen2.5-1.5B, SmolLM2-1.7B; writes `results_part2b/`.
    - Run `PRESET = "QUICK"` first in each to measure per-run time, then `"FULL"`.
 2. [layers.py](file:///C:/Users/Minahil%20Aman/Documents/parameter-splitting-llm/llm_parameter_splitting/layers.py):
    - PyTorch implementations of `SplitSwiGLU`, `SplitMoE`, `SplitLoRALinear`, and `SplitLinear`.
