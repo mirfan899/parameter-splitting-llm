@@ -1,0 +1,72 @@
+{
+  "preset": "MEDIUM",
+  "group": "part1",
+  "LR": 2e-05,
+  "BATCH_SIZE": 1,
+  "ACCUM_STEPS": 2,
+  "MAX_LEN": 256,
+  "GRAD_CLIP": 1.0,
+  "C_SCALE": 0.0001,
+  "SYM_EVERY": 25,
+  "ACC_MAX_NEW_TOKENS": 256,
+  "ACC_BATCH": 8,
+  "DATA_SEED": 0,
+  "SEEDS": [
+    42,
+    43,
+    44
+  ],
+  "STEPS": 100,
+  "TRAIN_EXAMPLES": 256,
+  "EVAL_EXAMPLES": 100,
+  "ACC_EXAMPLES": 50,
+  "models": [
+    {
+      "shard": false,
+      "gated": false,
+      "name": "Qwen2.5-0.5B",
+      "id": "Qwen/Qwen2.5-0.5B-Instruct",
+      "precision": "fp32",
+      "C": 0.0001
+    },
+    {
+      "shard": false,
+      "gated": false,
+      "name": "SmolLM-360M",
+      "id": "HuggingFaceTB/SmolLM-360M-Instruct",
+      "precision": "fp32",
+      "C": 0.0001
+    },
+    {
+      "shard": false,
+      "gated": false,
+      "name": "SmolLM2-360M",
+      "id": "HuggingFaceTB/SmolLM2-360M-Instruct",
+      "precision": "fp32",
+      "C": 0.0001
+    },
+    {
+      "shard": true,
+      "gated": false,
+      "name": "TinyLlama-1.1B",
+      "id": "TinyLlama/TinyLlama-1.1B-Chat-v1.0",
+      "precision": "bf16_sr",
+      "C": 0.01
+    },
+    {
+      "shard": false,
+      "gated": false,
+      "name": "SmolLM-360M-bf16SR",
+      "id": "HuggingFaceTB/SmolLM-360M-Instruct",
+      "precision": "bf16_sr",
+      "C": 0.01
+    }
+  ],
+  "methods": [
+    "Base (no split)",
+    "Base (2x W_down lr)",
+    "Naive split",
+    "Gaussian split",
+    "DPS-LLM"
+  ]
+}
