@@ -1,0 +1,245 @@
+[{"stream_name":"stderr","time":7.35395019,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.353994346,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.3539997790000005,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.354003433,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":7.973192566,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":7.973225252,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":7.973232484,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":7.9732361,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":20.835835125,"data":"[+] PyTorch Version: 2.11.0+cu128\n"}
+,{"stream_name":"stdout","time":20.835870586,"data":"[+] Detected GPUs: 2\n"}
+,{"stream_name":"stdout","time":20.835875704,"data":"    --\u003e [GPU 0] Tesla T4 | VRAM: 15.64 GB\n"}
+,{"stream_name":"stdout","time":20.835881875,"data":"    --\u003e [GPU 1] Tesla T4 | VRAM: 15.64 GB\n"}
+,{"stream_name":"stdout","time":20.835885869,"data":"[+] Multi-GPU Cluster Ready: 31.27 GB Combined VRAM!\n"}
+,{"stream_name":"stdout","time":21.415280444,"data":"[+] Max drift (d1 + d2): 0.00000000 (Exactly 0.0)\n"}
+,{"stream_name":"stdout","time":21.63559157,"data":"[+] SwiGLU Split: d_ffn 128 -\u003e 256 | Forward Drift: 0.00000006\n"}
+,{"stream_name":"stdout","time":21.989826138,"data":"[+] MoE Upcycled: 4 experts created! Output shape: torch.Size([2, 8, 64])\n"}
+,{"stream_name":"stdout","time":22.048855684,"data":"[+] LoRA Split: Rank 4 -\u003e 8 | Drift: 0.00000001\n"}
+,{"stream_name":"stdout","time":23.38800001,"data":"[+] Training 3 comparative LLM configurations...\n"}
+,{"stream_name":"stdout","time":33.674531392,"data":"Scratch Val Loss:     4.9095 (Perplexity: 135.58)\n"}
+,{"stream_name":"stdout","time":33.674570817,"data":"Non-Disc Val Loss:    4.9077 (Perplexity: 135.33)\n"}
+,{"stream_name":"stdout","time":33.674576067,"data":"DPS-LLM Val Loss:     4.9203 (Perplexity: 137.04)\n"}
+,{"stream_name":"stderr","time":48.442129328,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":48.442164604,"data":"\n"}
+,{"stream_name":"stderr","time":48.442168793,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stdout","time":48.470709937,"data":"[+] Loading real pre-trained LLM: Qwen/Qwen2.5-0.5B-Instruct across 2 GPU(s)...\n"}
+,{"stream_name":"stderr","time":49.403997105,"data":"[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n"}
+,{"stream_name":"stderr","time":49.404024043,"data":"\n"}
+,{"stream_name":"stderr","time":49.404029631,"data":"[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n"}
+,{"stream_name":"stdout","time":58.762975266,"data":"[+] Layers successfully sharded across GPUs:\n"}
+,{"stream_name":"stdout","time":58.763041557,"data":"    model.embed_tokens -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":58.763048913,"data":"    lm_head -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":58.76305351,"data":"    model.layers.0 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":58.763089469,"data":"    model.layers.1 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":58.763096801,"data":"    model.layers.2 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":58.763101394,"data":"    model.layers.3 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":58.763104981,"data":"    ...\n"}
+,{"stream_name":"stdout","time":60.5917056,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":60.59174185,"data":"[*] BEFORE SPLITTING: Qwen/Qwen2.5-0.5B-Instruct\n"}
+,{"stream_name":"stdout","time":60.591746288,"data":"    Total Parameters:    494,032,768\n"}
+,{"stream_name":"stdout","time":60.591750015,"data":"    Intermediate Size:   4864\n"}
+,{"stream_name":"stdout","time":60.591753654,"data":"    Baseline Generation: \"Explain why the sky is blue in one concise sentence: The sky appears blue because it reflects sunlight, which contains all colors of the rainbow. This phenomenon occurs due to the scattering and absorption of light by particles\"\n"}
+,{"stream_name":"stdout","time":60.591779542,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":62.251176669,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":62.251222044,"data":"[*] AFTER SPLITTING: Qwen/Qwen2.5-0.5B-Instruct\n"}
+,{"stream_name":"stdout","time":62.251225368,"data":"    Total Parameters:    807,819,136 (+313,786,368)\n"}
+,{"stream_name":"stdout","time":62.251227921,"data":"    New Intermediate:    9728\n"}
+,{"stream_name":"stdout","time":62.251230659,"data":"    Max Logit Drift:     1.406250 (Functional Invariance Verified!)\n"}
+,{"stream_name":"stdout","time":62.251248379,"data":"    Post-Split Output:   \"Explain why the sky is blue in one concise sentence: The sky appears blue because it reflects sunlight, which contains all colors of light. This phenomenon is known as Rayleigh scattering and occurs due to the Earth\"\n"}
+,{"stream_name":"stdout","time":62.251271322,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":62.667229984,"data":"[+] Multi-GPU backward gradient pass succeeded! Loss: 4.2013\n"}
+,{"stream_name":"stdout","time":62.667270502,"data":"[+] Successfully upcycled and expanded a real pre-trained Foundation Model!\n"}
+,{"stream_name":"stdout","time":62.836219247,"data":"[+] All GPU memory released for Section 8 benchmarks.\n"}
+,{"stream_name":"stdout","time":65.105279526,"data":"[+] GPU 0 ready | free 15.42 GB\n"}
+,{"stream_name":"stdout","time":65.105304847,"data":"[+] GPU 1 ready | free 15.44 GB\n"}
+,{"stream_name":"stdout","time":65.151343648,"data":"[+] Qwen2.5-1.5B         qwen2    layers=28  d_model=1536  d_ffn=8960   precision=bf16_sr  C=0.01  shard=True\n"}
+,{"stream_name":"stdout","time":65.183052321,"data":"[+] SmolLM2-1.7B         llama    layers=24  d_model=2048  d_ffn=8192   precision=bf16_sr  C=0.01  shard=True\n"}
+,{"stream_name":"stdout","time":65.183104396,"data":"[*] PRESET=MEDIUM, group=part2b -\u003e 2 models x 2 datasets x 5 methods x 3 seeds = 60 runs, writing to /kaggle/working/results_part2b\n"}
+,{"stream_name":"stdout","time":699.694572779,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Base (no split) | seed42              init 3.700 -\u003e final 3.111 (+15.92%) acc 18.0%  [10.5 min]\n"}
+,{"stream_name":"stdout","time":1102.106043418,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Base (2x W_down lr) | seed42          init 3.700 -\u003e final 3.048 (+17.63%) acc 12.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":1797.52237628,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Naive split | seed42                  init 3.697 -\u003e final 3.016 (+18.42%) acc 16.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":2493.73415678,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Gaussian split | seed42               init 3.699 -\u003e final 3.066 (+17.11%) acc 8.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":3189.906213742,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | DPS-LLM | seed42                      init 3.694 -\u003e final 3.057 (+17.24%) acc 8.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":3591.149603356,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Base (no split) | seed43              init 3.700 -\u003e final 3.119 (+15.69%) acc 8.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":3978.189776575,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Base (2x W_down lr) | seed43          init 3.700 -\u003e final 3.104 (+16.11%) acc 18.0%  [6.4 min]\n"}
+,{"stream_name":"stdout","time":4641.274144565,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Naive split | seed43                  init 3.697 -\u003e final 3.105 (+16.01%) acc 18.0%  [11.0 min]\n"}
+,{"stream_name":"stdout","time":5304.093863839,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Gaussian split | seed43               init 3.699 -\u003e final 3.143 (+15.03%) acc 20.0%  [11.0 min]\n"}
+,{"stream_name":"stdout","time":5977.80333517,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | DPS-LLM | seed43                      init 3.696 -\u003e final 3.099 (+16.15%) acc 20.0%  [11.2 min]\n"}
+,{"stream_name":"stdout","time":6379.690270478,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Base (no split) | seed44              init 3.700 -\u003e final 2.961 (+19.98%) acc 16.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":6781.705450454,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Base (2x W_down lr) | seed44          init 3.700 -\u003e final 2.973 (+19.64%) acc 14.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":7474.216166742,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Naive split | seed44                  init 3.697 -\u003e final 3.015 (+18.44%) acc 18.0%  [11.5 min]\n"}
+,{"stream_name":"stdout","time":8166.574459901,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | Gaussian split | seed44               init 3.697 -\u003e final 2.986 (+19.22%) acc 22.0%  [11.5 min]\n"}
+,{"stream_name":"stdout","time":8859.256720065,"data":"[GPU0] Qwen2.5-1.5B | GSM8K | DPS-LLM | seed44                      init 3.697 -\u003e final 2.955 (+20.08%) acc 18.0%  [11.5 min]\n"}
+,{"stream_name":"stdout","time":9016.120048952,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Base (no split) | seed42             init 5.389 -\u003e final 4.346 (+19.35%) acc nan%  [2.6 min]\n"}
+,{"stream_name":"stdout","time":9173.066925919,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Base (2x W_down lr) | seed42         init 5.389 -\u003e final 4.546 (+15.64%) acc nan%  [2.6 min]\n"}
+,{"stream_name":"stdout","time":9463.030037765,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Naive split | seed42                 init 5.383 -\u003e final 4.544 (+15.59%) acc nan%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":9752.999426362,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Gaussian split | seed42              init 5.368 -\u003e final 4.539 (+15.44%) acc nan%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":10043.218727614,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | DPS-LLM | seed42                     init 5.381 -\u003e final 4.550 (+15.44%) acc nan%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":10204.236376934,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Base (no split) | seed43             init 5.389 -\u003e final 4.309 (+20.03%) acc nan%  [2.7 min]\n"}
+,{"stream_name":"stdout","time":10365.07615546,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Base (2x W_down lr) | seed43         init 5.389 -\u003e final 4.516 (+16.19%) acc nan%  [2.7 min]\n"}
+,{"stream_name":"stdout","time":10662.421577961,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Naive split | seed43                 init 5.383 -\u003e final 4.516 (+16.11%) acc nan%  [4.9 min]\n"}
+,{"stream_name":"stdout","time":10960.470036481,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Gaussian split | seed43              init 5.405 -\u003e final 4.515 (+16.46%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":11258.553197385,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | DPS-LLM | seed43                     init 5.388 -\u003e final 4.510 (+16.31%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":11419.709058331,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Base (no split) | seed44             init 5.389 -\u003e final 4.324 (+19.75%) acc nan%  [2.7 min]\n"}
+,{"stream_name":"stdout","time":11580.666193483,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Base (2x W_down lr) | seed44         init 5.389 -\u003e final 4.599 (+14.66%) acc nan%  [2.7 min]\n"}
+,{"stream_name":"stdout","time":11878.562167688,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Naive split | seed44                 init 5.383 -\u003e final 4.558 (+15.33%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":12176.694121173,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | Gaussian split | seed44              init 5.377 -\u003e final 4.585 (+14.73%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":12474.734726836,"data":"[GPU0] Qwen2.5-1.5B | Alpaca | DPS-LLM | seed44                     init 5.393 -\u003e final 4.608 (+14.54%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":13016.391347245,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Base (no split) | seed42              init 3.356 -\u003e final 3.299 (+1.69%) acc 38.0%  [9.0 min]\n"}
+,{"stream_name":"stdout","time":13430.102750949,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Base (2x W_down lr) | seed42          init 3.356 -\u003e final 3.302 (+1.60%) acc 34.0%  [6.9 min]\n"}
+,{"stream_name":"stdout","time":14107.09796661,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Naive split | seed42                  init 3.350 -\u003e final 3.315 (+1.04%) acc 38.0%  [11.3 min]\n"}
+,{"stream_name":"stdout","time":14806.370098392,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Gaussian split | seed42               init 3.351 -\u003e final 3.286 (+1.93%) acc 40.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":15483.933011188,"data":"[GPU0] SmolLM2-1.7B | GSM8K | DPS-LLM | seed42                      init 3.348 -\u003e final 3.320 (+0.84%) acc 34.0%  [11.3 min]\n"}
+,{"stream_name":"stdout","time":15888.614827555,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Base (no split) | seed43              init 3.356 -\u003e final 3.390 (-1.03%) acc 26.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":16279.916206923,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Base (2x W_down lr) | seed43          init 3.356 -\u003e final 3.339 (+0.49%) acc 30.0%  [6.5 min]\n"}
+,{"stream_name":"stdout","time":16983.677690748,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Naive split | seed43                  init 3.350 -\u003e final 3.352 (-0.06%) acc 28.0%  [11.7 min]\n"}
+,{"stream_name":"stdout","time":17662.348215378,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Gaussian split | seed43               init 3.353 -\u003e final 3.348 (+0.15%) acc 32.0%  [11.3 min]\n"}
+,{"stream_name":"stdout","time":18341.036346379,"data":"[GPU0] SmolLM2-1.7B | GSM8K | DPS-LLM | seed43                      init 3.353 -\u003e final 3.353 (+0.00%) acc 28.0%  [11.3 min]\n"}
+,{"stream_name":"stdout","time":18712.906178996,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Base (no split) | seed44              init 3.356 -\u003e final 3.323 (+0.97%) acc 38.0%  [6.2 min]\n"}
+,{"stream_name":"stdout","time":19088.895020047,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Base (2x W_down lr) | seed44          init 3.356 -\u003e final 3.343 (+0.38%) acc 36.0%  [6.3 min]\n"}
+,{"stream_name":"stdout","time":19741.400659678,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Naive split | seed44                  init 3.350 -\u003e final 3.337 (+0.41%) acc 36.0%  [10.9 min]\n"}
+,{"stream_name":"stdout","time":20406.244741354,"data":"[GPU0] SmolLM2-1.7B | GSM8K | Gaussian split | seed44               init 3.352 -\u003e final 3.343 (+0.29%) acc 30.0%  [11.1 min]\n"}
+,{"stream_name":"stdout","time":21058.988488285,"data":"[GPU0] SmolLM2-1.7B | GSM8K | DPS-LLM | seed44                      init 3.351 -\u003e final 3.339 (+0.36%) acc 34.0%  [10.9 min]\n"}
+,{"stream_name":"stdout","time":21222.444508838,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Base (no split) | seed42             init 5.633 -\u003e final 3.855 (+31.56%) acc nan%  [2.7 min]\n"}
+,{"stream_name":"stdout","time":21385.931856326,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Base (2x W_down lr) | seed42         init 5.633 -\u003e final 3.857 (+31.53%) acc nan%  [2.7 min]\n"}
+,{"stream_name":"stdout","time":21685.857403517,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Naive split | seed42                 init 5.634 -\u003e final 3.860 (+31.48%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":21986.025096774,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Gaussian split | seed42              init 5.625 -\u003e final 3.864 (+31.29%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":22286.450714947,"data":"[GPU0] SmolLM2-1.7B | Alpaca | DPS-LLM | seed42                     init 5.635 -\u003e final 3.858 (+31.53%) acc nan%  [5.0 min]\n"}
+,{"stream_name":"stdout","time":22454.851018979,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Base (no split) | seed43             init 5.633 -\u003e final 3.864 (+31.40%) acc nan%  [2.8 min]\n"}
+,{"stream_name":"stdout","time":22623.143870154,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Base (2x W_down lr) | seed43         init 5.633 -\u003e final 3.846 (+31.73%) acc nan%  [2.8 min]\n"}
+,{"stream_name":"stdout","time":22931.074692418,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Naive split | seed43                 init 5.634 -\u003e final 3.842 (+31.80%) acc nan%  [5.1 min]\n"}
+,{"stream_name":"stdout","time":23237.765421804,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Gaussian split | seed43              init 5.642 -\u003e final 3.845 (+31.85%) acc nan%  [5.1 min]\n"}
+,{"stream_name":"stdout","time":23547.677476457,"data":"[GPU0] SmolLM2-1.7B | Alpaca | DPS-LLM | seed43                     init 5.634 -\u003e final 3.843 (+31.78%) acc nan%  [5.2 min]\n"}
+,{"stream_name":"stdout","time":23716.256364655,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Base (no split) | seed44             init 5.633 -\u003e final 3.883 (+31.07%) acc nan%  [2.8 min]\n"}
+,{"stream_name":"stdout","time":23884.633868079,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Base (2x W_down lr) | seed44         init 5.633 -\u003e final 3.887 (+31.00%) acc nan%  [2.8 min]\n"}
+,{"stream_name":"stdout","time":24193.633030423,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Naive split | seed44                 init 5.634 -\u003e final 3.883 (+31.07%) acc nan%  [5.1 min]\n"}
+,{"stream_name":"stdout","time":24502.770339632,"data":"[GPU0] SmolLM2-1.7B | Alpaca | Gaussian split | seed44              init 5.642 -\u003e final 3.882 (+31.20%) acc nan%  [5.1 min]\n"}
+,{"stream_name":"stdout","time":24811.943847169,"data":"[GPU0] SmolLM2-1.7B | Alpaca | DPS-LLM | seed44                     init 5.628 -\u003e final 3.888 (+30.91%) acc nan%  [5.1 min]\n"}
+,{"stream_name":"stdout","time":24812.002839054,"data":"\n"}
+,{"stream_name":"stdout","time":24812.002861591,"data":"[+] Matrix finished in 6.87 h  (60/60 runs succeeded)\n"}
+,{"stream_name":"stdout","time":24812.002867233,"data":"\n"}
+,{"stream_name":"stdout","time":24812.002871985,"data":"=== MEAN +/- STD OVER SEEDS ===\n"}
+,{"stream_name":"stdout","time":24812.00287692,"data":"       Model Dataset              Method Precision    C  Params_M  InitPPL  FinalPPL  FinalPPL_std  PPLDrop  PPLDrop_std  InitAcc    Acc  Acc_std  n\n"}
+,{"stream_name":"stdout","time":24812.002882544,"data":"Qwen2.5-1.5B   GSM8K     Base (no split)   bf16_sr 0.00  1543.714    3.700     3.064         0.089   17.196        2.414     12.0 14.000    5.292  3\n"}
+,{"stream_name":"stdout","time":24812.002888087,"data":"Qwen2.5-1.5B   GSM8K Base (2x W_down lr)   bf16_sr 0.00  1543.714    3.700     3.042         0.066   17.793        1.770      NaN 14.667    3.055  3\n"}
+,{"stream_name":"stdout","time":24812.002903292,"data":"Qwen2.5-1.5B   GSM8K         Naive split   bf16_sr 0.00  2699.769    3.697     3.045         0.052   17.623        1.401      NaN 17.333    1.155  3\n"}
+,{"stream_name":"stdout","time":24812.002907792,"data":"Qwen2.5-1.5B   GSM8K      Gaussian split   bf16_sr 0.01  2699.769    3.698     3.065         0.078   17.118        2.098      NaN 16.667    7.572  3\n"}
+,{"stream_name":"stdout","time":24812.002911318,"data":"Qwen2.5-1.5B   GSM8K             DPS-LLM   bf16_sr 0.01  2699.769    3.696     3.037         0.074   17.826        2.029      NaN 15.333    6.429  3\n"}
+,{"stream_name":"stdout","time":24812.002915217,"data":"Qwen2.5-1.5B  Alpaca     Base (no split)   bf16_sr 0.00  1543.714    5.389     4.327         0.018   19.711        0.341      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002918641,"data":"Qwen2.5-1.5B  Alpaca Base (2x W_down lr)   bf16_sr 0.00  1543.714    5.389     4.554         0.042   15.496        0.775      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002922317,"data":"Qwen2.5-1.5B  Alpaca         Naive split   bf16_sr 0.00  2699.769    5.383     4.539         0.021   15.676        0.398      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002932823,"data":"Qwen2.5-1.5B  Alpaca      Gaussian split   bf16_sr 0.01  2699.769    5.383     4.546         0.036   15.544        0.871      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002936727,"data":"Qwen2.5-1.5B  Alpaca             DPS-LLM   bf16_sr 0.01  2699.769    5.387     4.556         0.050   15.431        0.881      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002940414,"data":"SmolLM2-1.7B   GSM8K     Base (no split)   bf16_sr 0.00  1711.376    3.356     3.337         0.047    0.546        1.408     14.0 34.000    6.928  3\n"}
+,{"stream_name":"stdout","time":24812.002944613,"data":"SmolLM2-1.7B   GSM8K Base (2x W_down lr)   bf16_sr 0.00  1711.376    3.356     3.328         0.023    0.824        0.674      NaN 33.333    3.055  3\n"}
+,{"stream_name":"stdout","time":24812.002950212,"data":"SmolLM2-1.7B   GSM8K         Naive split   bf16_sr 0.00  2919.336    3.350     3.335         0.019    0.463        0.555      NaN 34.000    5.292  3\n"}
+,{"stream_name":"stdout","time":24812.002954275,"data":"SmolLM2-1.7B   GSM8K      Gaussian split   bf16_sr 0.01  2919.336    3.352     3.326         0.034    0.788        0.988      NaN 34.000    5.292  3\n"}
+,{"stream_name":"stdout","time":24812.002958444,"data":"SmolLM2-1.7B   GSM8K             DPS-LLM   bf16_sr 0.01  2919.336    3.351     3.337         0.016    0.403        0.423      NaN 32.000    3.464  3\n"}
+,{"stream_name":"stdout","time":24812.002962339,"data":"SmolLM2-1.7B  Alpaca     Base (no split)   bf16_sr 0.00  1711.376    5.633     3.867         0.014   31.344        0.251      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002966819,"data":"SmolLM2-1.7B  Alpaca Base (2x W_down lr)   bf16_sr 0.00  1711.376    5.633     3.863         0.021   31.420        0.375      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002971137,"data":"SmolLM2-1.7B  Alpaca         Naive split   bf16_sr 0.00  2919.336    5.634     3.862         0.021   31.449        0.367      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002974879,"data":"SmolLM2-1.7B  Alpaca      Gaussian split   bf16_sr 0.01  2919.336    5.636     3.864         0.019   31.448        0.355      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002978418,"data":"SmolLM2-1.7B  Alpaca             DPS-LLM   bf16_sr 0.01  2919.336    5.632     3.863         0.023   31.406        0.446      NaN    NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":24812.002986609,"data":"\n"}
+,{"stream_name":"stdout","time":24812.002991416,"data":"=== PAIRED TESTS (difference in relative PPL reduction, percentage points; A - B) ===\n"}
+,{"stream_name":"stdout","time":24812.002994667,"data":"       Model Dataset              A                   B  MeanDiff_pp A_wins  p_value\n"}
+,{"stream_name":"stdout","time":24812.003000158,"data":"Qwen2.5-1.5B   GSM8K        DPS-LLM         Naive split       0.2029    2/3   0.8262\n"}
+,{"stream_name":"stdout","time":24812.003003488,"data":"Qwen2.5-1.5B   GSM8K Gaussian split         Naive split      -0.5049    1/3   0.5173\n"}
+,{"stream_name":"stdout","time":24812.003007608,"data":"Qwen2.5-1.5B   GSM8K        DPS-LLM      Gaussian split       0.7078    3/3   0.1396\n"}
+,{"stream_name":"stdout","time":24812.003011511,"data":"Qwen2.5-1.5B   GSM8K    Naive split Base (2x W_down lr)      -0.1700    1/3   0.7955\n"}
+,{"stream_name":"stdout","time":24812.003015234,"data":"Qwen2.5-1.5B   GSM8K        DPS-LLM Base (2x W_down lr)       0.0329    2/3   0.9026\n"}
+,{"stream_name":"stdout","time":24812.003018974,"data":"Qwen2.5-1.5B  Alpaca        DPS-LLM         Naive split      -0.2449    1/3   0.4826\n"}
+,{"stream_name":"stdout","time":24812.003022789,"data":"Qwen2.5-1.5B  Alpaca Gaussian split         Naive split      -0.1318    1/3   0.6785\n"}
+,{"stream_name":"stdout","time":24812.003026184,"data":"Qwen2.5-1.5B  Alpaca        DPS-LLM      Gaussian split      -0.1132    0/3   0.1831\n"}
+,{"stream_name":"stdout","time":24812.003030426,"data":"Qwen2.5-1.5B  Alpaca    Naive split Base (2x W_down lr)       0.1795    1/3   0.5373\n"}
+,{"stream_name":"stdout","time":24812.003034323,"data":"Qwen2.5-1.5B  Alpaca        DPS-LLM Base (2x W_down lr)      -0.0654    1/3   0.5518\n"}
+,{"stream_name":"stdout","time":24812.003038192,"data":"SmolLM2-1.7B   GSM8K        DPS-LLM         Naive split      -0.0600    1/3   0.5115\n"}
+,{"stream_name":"stdout","time":24812.003041339,"data":"SmolLM2-1.7B   GSM8K Gaussian split         Naive split       0.3254    2/3   0.3858\n"}
+,{"stream_name":"stdout","time":24812.003044444,"data":"SmolLM2-1.7B   GSM8K        DPS-LLM      Gaussian split      -0.3854    1/3   0.3905\n"}
+,{"stream_name":"stdout","time":24812.003047525,"data":"SmolLM2-1.7B   GSM8K    Naive split Base (2x W_down lr)      -0.3612    1/3   0.2024\n"}
+,{"stream_name":"stdout","time":24812.003050853,"data":"SmolLM2-1.7B   GSM8K        DPS-LLM Base (2x W_down lr)      -0.4212    0/3   0.1891\n"}
+,{"stream_name":"stdout","time":24812.003053966,"data":"SmolLM2-1.7B  Alpaca        DPS-LLM         Naive split      -0.0426    1/3   0.5676\n"}
+,{"stream_name":"stdout","time":24812.003057196,"data":"SmolLM2-1.7B  Alpaca Gaussian split         Naive split      -0.0009    2/3   0.9928\n"}
+,{"stream_name":"stdout","time":24812.003060272,"data":"SmolLM2-1.7B  Alpaca        DPS-LLM      Gaussian split      -0.0416    1/3   0.8102\n"}
+,{"stream_name":"stdout","time":24812.003063455,"data":"SmolLM2-1.7B  Alpaca    Naive split Base (2x W_down lr)       0.0292    2/3   0.5463\n"}
+,{"stream_name":"stdout","time":24812.003080476,"data":"SmolLM2-1.7B  Alpaca        DPS-LLM Base (2x W_down lr)      -0.0133    2/3   0.7766\n"}
+,{"stream_name":"stdout","time":24812.003087821,"data":"\n"}
+,{"stream_name":"stdout","time":24812.003090909,"data":"=== LaTeX rows for Table 1 (mean +/- std) ===\n"}
+,{"stream_name":"stdout","time":24812.003094602,"data":"Qwen2.5-1.5B \u0026 GSM8K \u0026 Base (no split) \u0026 1543.7M \u0026 3.70 \u0026 3.06 $\\pm$ 0.09 \u0026 17.20 $\\pm$ 2.41 \u0026 14.0 $\\pm$ 5.3 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003099986,"data":"Qwen2.5-1.5B \u0026 GSM8K \u0026 Base (2x W_down lr) \u0026 1543.7M \u0026 3.70 \u0026 3.04 $\\pm$ 0.07 \u0026 17.79 $\\pm$ 1.77 \u0026 14.7 $\\pm$ 3.1 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003109266,"data":"Qwen2.5-1.5B \u0026 GSM8K \u0026 Naive split \u0026 2699.8M \u0026 3.70 \u0026 3.05 $\\pm$ 0.05 \u0026 17.62 $\\pm$ 1.40 \u0026 17.3 $\\pm$ 1.2 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003113365,"data":"Qwen2.5-1.5B \u0026 GSM8K \u0026 Gaussian split \u0026 2699.8M \u0026 3.70 \u0026 3.07 $\\pm$ 0.08 \u0026 17.12 $\\pm$ 2.10 \u0026 16.7 $\\pm$ 7.6 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003117228,"data":"Qwen2.5-1.5B \u0026 GSM8K \u0026 DPS-LLM \u0026 2699.8M \u0026 3.70 \u0026 3.04 $\\pm$ 0.07 \u0026 17.83 $\\pm$ 2.03 \u0026 15.3 $\\pm$ 6.4 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003121151,"data":"Qwen2.5-1.5B \u0026 Alpaca \u0026 Base (no split) \u0026 1543.7M \u0026 5.39 \u0026 4.33 $\\pm$ 0.02 \u0026 19.71 $\\pm$ 0.34 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003125616,"data":"Qwen2.5-1.5B \u0026 Alpaca \u0026 Base (2x W_down lr) \u0026 1543.7M \u0026 5.39 \u0026 4.55 $\\pm$ 0.04 \u0026 15.50 $\\pm$ 0.78 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003129475,"data":"Qwen2.5-1.5B \u0026 Alpaca \u0026 Naive split \u0026 2699.8M \u0026 5.38 \u0026 4.54 $\\pm$ 0.02 \u0026 15.68 $\\pm$ 0.40 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003132902,"data":"Qwen2.5-1.5B \u0026 Alpaca \u0026 Gaussian split \u0026 2699.8M \u0026 5.38 \u0026 4.55 $\\pm$ 0.04 \u0026 15.54 $\\pm$ 0.87 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003137799,"data":"Qwen2.5-1.5B \u0026 Alpaca \u0026 DPS-LLM \u0026 2699.8M \u0026 5.39 \u0026 4.56 $\\pm$ 0.05 \u0026 15.43 $\\pm$ 0.88 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003141666,"data":"SmolLM2-1.7B \u0026 GSM8K \u0026 Base (no split) \u0026 1711.4M \u0026 3.36 \u0026 3.34 $\\pm$ 0.05 \u0026 0.55 $\\pm$ 1.41 \u0026 34.0 $\\pm$ 6.9 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003145734,"data":"SmolLM2-1.7B \u0026 GSM8K \u0026 Base (2x W_down lr) \u0026 1711.4M \u0026 3.36 \u0026 3.33 $\\pm$ 0.02 \u0026 0.82 $\\pm$ 0.67 \u0026 33.3 $\\pm$ 3.1 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003149524,"data":"SmolLM2-1.7B \u0026 GSM8K \u0026 Naive split \u0026 2919.3M \u0026 3.35 \u0026 3.33 $\\pm$ 0.02 \u0026 0.46 $\\pm$ 0.55 \u0026 34.0 $\\pm$ 5.3 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003153377,"data":"SmolLM2-1.7B \u0026 GSM8K \u0026 Gaussian split \u0026 2919.3M \u0026 3.35 \u0026 3.33 $\\pm$ 0.03 \u0026 0.79 $\\pm$ 0.99 \u0026 34.0 $\\pm$ 5.3 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003157113,"data":"SmolLM2-1.7B \u0026 GSM8K \u0026 DPS-LLM \u0026 2919.3M \u0026 3.35 \u0026 3.34 $\\pm$ 0.02 \u0026 0.40 $\\pm$ 0.42 \u0026 32.0 $\\pm$ 3.5 \\\\\n"}
+,{"stream_name":"stdout","time":24812.003161173,"data":"SmolLM2-1.7B \u0026 Alpaca \u0026 Base (no split) \u0026 1711.4M \u0026 5.63 \u0026 3.87 $\\pm$ 0.01 \u0026 31.34 $\\pm$ 0.25 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003165008,"data":"SmolLM2-1.7B \u0026 Alpaca \u0026 Base (2x W_down lr) \u0026 1711.4M \u0026 5.63 \u0026 3.86 $\\pm$ 0.02 \u0026 31.42 $\\pm$ 0.37 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003169808,"data":"SmolLM2-1.7B \u0026 Alpaca \u0026 Naive split \u0026 2919.3M \u0026 5.63 \u0026 3.86 $\\pm$ 0.02 \u0026 31.45 $\\pm$ 0.37 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003173745,"data":"SmolLM2-1.7B \u0026 Alpaca \u0026 Gaussian split \u0026 2919.3M \u0026 5.64 \u0026 3.86 $\\pm$ 0.02 \u0026 31.45 $\\pm$ 0.35 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003177576,"data":"SmolLM2-1.7B \u0026 Alpaca \u0026 DPS-LLM \u0026 2919.3M \u0026 5.63 \u0026 3.86 $\\pm$ 0.02 \u0026 31.41 $\\pm$ 0.45 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":24812.003181733,"data":"\n"}
+,{"stream_name":"stdout","time":24812.003185071,"data":"[+] Saved: benchmark_results.csv, benchmark_summary.csv, benchmark_paired_tests.csv, loss_histories.json, symmetry_histories.json, benchmark_config.json\n"}
+,{"stream_name":"stdout","time":24812.136166027,"data":"[*] 60 runs in benchmark_results.csv; per model/method:\n"}
+,{"stream_name":"stdout","time":24812.136194483,"data":"Model         Method             \n"}
+,{"stream_name":"stdout","time":24812.136200825,"data":"Qwen2.5-1.5B  Base (2x W_down lr)    6\n"}
+,{"stream_name":"stdout","time":24812.136206229,"data":"              Base (no split)        6\n"}
+,{"stream_name":"stdout","time":24812.136210377,"data":"              DPS-LLM                6\n"}
+,{"stream_name":"stdout","time":24812.136214319,"data":"              Gaussian split         6\n"}
+,{"stream_name":"stdout","time":24812.136218561,"data":"              Naive split            6\n"}
+,{"stream_name":"stdout","time":24812.136222899,"data":"SmolLM2-1.7B  Base (2x W_down lr)    6\n"}
+,{"stream_name":"stdout","time":24812.136227041,"data":"              Base (no split)        6\n"}
+,{"stream_name":"stdout","time":24812.136230477,"data":"              DPS-LLM                6\n"}
+,{"stream_name":"stdout","time":24812.136234017,"data":"              Gaussian split         6\n"}
+,{"stream_name":"stdout","time":24812.136237457,"data":"              Naive split            6\n"}
+,{"stream_name":"stdout","time":24815.900422841,"data":"[+] Figures: benchmark_ppl_seeds.png, benchmark_gsm8k_accuracy.png, benchmark_loss_convergence.png, benchmark_symmetry_tracking.png\n"}
+,{"stream_name":"stdout","time":25220.453679503,"data":"[LR] Qwen2.5-1.5B         Base (no split)  lr=1e-05   3.700 -\u003e 3.174 (+14.22%)  acc 12.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":25916.31840945,"data":"[LR] Qwen2.5-1.5B         DPS-LLM          lr=1e-05   3.694 -\u003e 3.048 (+17.49%)  acc 22.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":26320.182784782,"data":"[LR] Qwen2.5-1.5B         Base (no split)  lr=5e-05   3.700 -\u003e 2.938 (+20.60%)  acc 2.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":27015.486921299,"data":"[LR] Qwen2.5-1.5B         DPS-LLM          lr=5e-05   3.694 -\u003e 3.103 (+15.98%)  acc 8.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":27418.726994207,"data":"[LR] Qwen2.5-1.5B         Base (no split)  lr=0.0001  3.700 -\u003e 3.568 (+3.56%)  acc 2.0%  [6.7 min]\n"}
+,{"stream_name":"stdout","time":28114.102307238,"data":"[LR] Qwen2.5-1.5B         DPS-LLM          lr=0.0001  3.694 -\u003e 4.269 (-15.57%)  acc 2.0%  [11.6 min]\n"}
+,{"stream_name":"stdout","time":28505.566017094,"data":"[LR] SmolLM2-1.7B         Base (no split)  lr=1e-05   3.356 -\u003e 3.329 (+0.80%)  acc 44.0%  [6.5 min]\n"}
+,{"stream_name":"stdout","time":29177.761401644,"data":"[LR] SmolLM2-1.7B         DPS-LLM          lr=1e-05   3.348 -\u003e 3.313 (+1.04%)  acc 44.0%  [11.2 min]\n"}
+,{"stream_name":"stdout","time":29567.738529286,"data":"[LR] SmolLM2-1.7B         Base (no split)  lr=5e-05   3.356 -\u003e 3.311 (+1.33%)  acc 34.0%  [6.5 min]\n"}
+,{"stream_name":"stdout","time":30277.949753373,"data":"[LR] SmolLM2-1.7B         DPS-LLM          lr=5e-05   3.348 -\u003e 3.247 (+3.03%)  acc 36.0%  [11.8 min]\n"}
+,{"stream_name":"stdout","time":30691.472242613,"data":"[LR] SmolLM2-1.7B         Base (no split)  lr=0.0001  3.356 -\u003e 3.108 (+7.37%)  acc 10.0%  [6.9 min]\n"}
+,{"stream_name":"stdout","time":31401.044273438,"data":"[LR] SmolLM2-1.7B         DPS-LLM          lr=0.0001  3.348 -\u003e 3.014 (+9.98%)  acc 10.0%  [11.8 min]\n"}
+,{"stream_name":"stdout","time":31401.045482672,"data":"\n"}
+,{"stream_name":"stdout","time":31401.045501124,"data":"=== RELATIVE PPL REDUCTION (%) vs LEARNING RATE ( GSM8K , seed 42 ) ===\n"}
+,{"stream_name":"stdout","time":31401.045508464,"data":"LR                            0.00001  0.00002  0.00005  0.00010\n"}
+,{"stream_name":"stdout","time":31401.045514305,"data":"Model        Method                                             \n"}
+,{"stream_name":"stdout","time":31401.045537598,"data":"Qwen2.5-1.5B Base (no split)    14.22    15.92    20.60     3.56\n"}
+,{"stream_name":"stdout","time":31401.045541096,"data":"             DPS-LLM            17.49    17.24    15.98   -15.57\n"}
+,{"stream_name":"stdout","time":31401.045544058,"data":"SmolLM2-1.7B Base (no split)     0.80     1.69     1.33     7.37\n"}
+,{"stream_name":"stdout","time":31401.045546895,"data":"             DPS-LLM             1.04     0.84     3.03     9.98\n"}
+,{"stream_name":"stdout","time":31401.045549746,"data":"\n"}
+,{"stream_name":"stdout","time":31401.045552468,"data":"=== BEST LEARNING RATE PER MODEL AND METHOD ===\n"}
+,{"stream_name":"stdout","time":31401.045555437,"data":"       Model          Method      LR  PPLDrop  Acc\n"}
+,{"stream_name":"stdout","time":31401.045558288,"data":"Qwen2.5-1.5B Base (no split) 0.00005    20.60  2.0\n"}
+,{"stream_name":"stdout","time":31401.045561129,"data":"Qwen2.5-1.5B         DPS-LLM 0.00001    17.49 22.0\n"}
+,{"stream_name":"stdout","time":31401.045563958,"data":"SmolLM2-1.7B Base (no split) 0.00010     7.37 10.0\n"}
+,{"stream_name":"stdout","time":31401.045566853,"data":"SmolLM2-1.7B         DPS-LLM 0.00010     9.98 10.0\n"}
+,{"stream_name":"stdout","time":31401.045569713,"data":"[+] Saved lr_sweep_results.csv\n"}
+,{"stream_name":"stderr","time":31407.180997454,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":31407.181028702,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":31407.375961235,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":31407.376004482,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":31408.139690391,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":31408.438341962,"data":"[NbConvertApp] Writing 3103645 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":31410.903034281,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":31411.983133375,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":31411.983160371,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":31411.983505671,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":31411.983743946,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":31411.983961589,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":31411.984496635,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":31411.984777288,"data":"[NbConvertApp] Writing 1725576 bytes to __results__.html\n"}
+]
