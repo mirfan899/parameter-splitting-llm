@@ -1,0 +1,14 @@
+\begin{tabular}{@{}lccccc@{}}
+\toprule
+\textbf{Model} & \multicolumn{2}{c}{\textbf{Base}} & \multicolumn{2}{c}{\textbf{DPS-LLM}} & $\Delta$ \\
+\cmidrule(lr){2-3}\cmidrule(lr){4-5}
+ & lr & red. & lr & red. & \\
+\midrule
+SmolLM-360M & $10^{-4}$ & 34.40 & $10^{-4}$ & 34.54 & +0.14 \\
+SmolLM2-360M & $5{\times}10^{-5}$ & 23.04 & $5{\times}10^{-5}$ & 22.83 & $-$0.20 \\
+Qwen2.5-0.5B & $2{\times}10^{-5}$ & 15.45 & $10^{-5}$ & 15.07 & $-$0.38 \\
+TinyLlama-1.1B$^\dagger$ & $10^{-5}$ & 51.45 & $10^{-5}$ & 50.59 & $-$0.87 \\
+OLMo-2-1B$^\dagger$ & $10^{-5}$ & 52.04 & $10^{-5}$ & 51.83 & $-$0.21 \\
+SmolLM-360M$^\dagger$ & $10^{-4}$ & 34.37 & $10^{-4}$ & 34.57 & +0.19 \\
+\bottomrule
+\end{tabular}

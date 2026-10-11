@@ -1,0 +1,40 @@
+{
+  "preset": "MEDIUM",
+  "group": "part2a",
+  "LR": 2e-05,
+  "BATCH_SIZE": 1,
+  "ACCUM_STEPS": 2,
+  "MAX_LEN": 256,
+  "GRAD_CLIP": 1.0,
+  "C_SCALE": 0.0001,
+  "SYM_EVERY": 25,
+  "ACC_MAX_NEW_TOKENS": 256,
+  "ACC_BATCH": 8,
+  "DATA_SEED": 0,
+  "SEEDS": [
+    42,
+    43,
+    44
+  ],
+  "STEPS": 100,
+  "TRAIN_EXAMPLES": 256,
+  "EVAL_EXAMPLES": 100,
+  "ACC_EXAMPLES": 50,
+  "models": [
+    {
+      "shard": true,
+      "gated": false,
+      "name": "OLMo-2-1B",
+      "id": "allenai/OLMo-2-0425-1B-Instruct",
+      "precision": "bf16_sr",
+      "C": 0.01
+    }
+  ],
+  "methods": [
+    "Base (no split)",
+    "Base (2x W_down lr)",
+    "Naive split",
+    "Gaussian split",
+    "DPS-LLM"
+  ]
+}
