@@ -27,7 +27,7 @@ INK = "#1E293B"
 def main(path):
     hist = json.loads(Path(path).read_text())
     plt.rcParams["font.family"] = "DejaVu Sans"
-    fig, axes = plt.subplots(1, 2, figsize=(6.6, 2.6), dpi=300, sharey=True)
+    fig, axes = plt.subplots(1, 2, figsize=(4.4, 2.5), dpi=300, sharey=True)
     for ax, (model, title) in zip(axes, PANELS):
         for method, (label, colour, ls) in STYLE.items():
             runs = [v for k, v in hist.items() if v and k.split(" | ")[0] == model and k.split(" | ")[2] == method]
