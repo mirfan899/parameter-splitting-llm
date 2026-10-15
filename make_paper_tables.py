@@ -61,8 +61,8 @@ def main_table(df):
     rows = rows[:-1]
     header = (r"\textbf{Model} & \textbf{Data} & \textbf{Base} & \textbf{Base, 2$\times$ lr $W_{down}$} & "
               r"\textbf{Naive split} & \textbf{Gaussian split} & \textbf{DPS-LLM} & \textbf{DPS $-$ ctrl ($p$)} \\")
-    return "\n".join([r"\begin{tabular*}{\textwidth}{@{\extracolsep{\fill}}llcccccc@{}}", r"\toprule", header,
-                      r"\midrule", *rows, r"\bottomrule", r"\end{tabular*}"])
+    return "\n".join([r"\begin{tabular}{@{}llcccccc@{}}", r"\toprule", header,
+                      r"\midrule", *rows, r"\bottomrule", r"\end{tabular}"])
 
 
 def accuracy_table(df):

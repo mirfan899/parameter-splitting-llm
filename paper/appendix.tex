@@ -1,0 +1,39 @@
+% Appendix of the paper, shared by all venue versions (see body.tex).
+
+\section{Additional Growth Regimes}
+\label{app:regimes}
+The same rows/columns operator and anti-symmetric noise apply to two further situations. Both are implemented in the released code but were not part of the benchmark in Section~\ref{sec:setup}.
+
+\paragraph{Dense-to-MoE upcycling.}
+A dense SwiGLU block is cloned into $E$ experts with independent calculated-noise draws $\Delta^{(e)}$ and combined by a top-$k$ softmax router \citep{shazeer2017outrageously,fedus2022switch}:
+\begin{align}
+    \mathrm{Expert}_e(x) &= \mathrm{SwiGLU}\big(x;\,W+\Delta^{(e)}\big), \\
+    g(x) &= \mathrm{Top}\text{-}k\big(\mathrm{softmax}(W_r x)\big).
+\end{align} With $k=E$ and a uniform router the layer is initially function-preserving; the perturbations give each expert a distinct gradient trajectory from the first step, which is the failure mode that sparse upcycling \citep{komatsuzaki2022sparse} must otherwise wait for the router to resolve.
+
+\paragraph{LoRA rank doubling.}
+For a LoRA adapter $\Delta W = BA$ with $A\in\mathbb{R}^{r\times d_{in}}$, $B\in\mathbb{R}^{d_{out}\times r}$ \citep{hu2021lora}, the rank is grown $r\to2r$ by
+\begin{equation}
+    A' = \begin{bmatrix} A \\ A+\Delta_A \end{bmatrix}, \qquad
+    B' = \begin{bmatrix} B & \Delta_B \end{bmatrix},
+\end{equation}
+where $\Delta_B$ is calculated noise on a zero matrix, i.e.\ near zero. Because the new columns of $B$ are (near) zero, $B'A' = BA + \Delta_B(A+\Delta_A)\approx BA$, so the adapted function is preserved while the optimiser gains $r$ additional rank-one directions.
+
+\section{Prompt Templates}
+\label{app:prompts}
+Each example is rendered as plain text and tokenised with the checkpoint's own tokeniser; no chat template is applied.
+\begin{center}\small
+\begin{tabular}{@{}l>{\ttfamily}p{0.7\columnwidth}@{}}
+\toprule
+\textbf{Dataset} & \textrm{\textbf{Template}} \\
+\midrule
+GSM8K & Question: \{question\}\textbackslash n Answer: \{answer\} \\
+Alpaca & Instruction: \{instruction\}\textbackslash n [Input: \{input\}\textbackslash n] Response: \{output\} \\
+\bottomrule
+\end{tabular}
+\end{center}
+The bracketed \texttt{Input} line is emitted only when the example has a non-empty input field.
+
+\section{Reproducibility}
+\label{app:repro}
+The split operator (\texttt{split\_huggingface\_llm.py}), the synthetic experiment behind Figure~\ref{fig:training_curve}, the Kaggle notebooks that produced every table and figure, the scripts that generate them from the raw results, and every per-seed result, loss history and neuron-pair distance trace are available at \repourl. The benchmark notebook runs on a free Kaggle session with two T4 GPUs; the float32 models take about 0.8 hours each and TinyLlama 2.4 hours for 30 runs, and no run starts after 11 hours, so a session always saves its checkpointed results.
