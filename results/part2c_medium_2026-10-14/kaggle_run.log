@@ -1,0 +1,172 @@
+[{"stream_name":"stderr","time":10.166574474,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.166647698,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.16665472,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.166658546,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stderr","time":10.912733564,"data":"0.00s - Debugger warning: It seems that frozen modules are being used, which may\n"}
+,{"stream_name":"stderr","time":10.912787382,"data":"0.00s - make the debugger miss breakpoints. Please pass -Xfrozen_modules=off\n"}
+,{"stream_name":"stderr","time":10.91279294,"data":"0.00s - to python to disable frozen modules.\n"}
+,{"stream_name":"stderr","time":10.912796667,"data":"0.00s - Note: Debugging will proceed. Set PYDEVD_DISABLE_FILE_VALIDATION=1 to disable this validation.\n"}
+,{"stream_name":"stdout","time":29.421375958,"data":"[+] PyTorch Version: 2.11.0+cu128\n"}
+,{"stream_name":"stdout","time":29.421417428,"data":"[+] Detected GPUs: 2\n"}
+,{"stream_name":"stdout","time":29.421423833,"data":"    --\u003e [GPU 0] Tesla T4 | VRAM: 15.64 GB\n"}
+,{"stream_name":"stdout","time":29.421427983,"data":"    --\u003e [GPU 1] Tesla T4 | VRAM: 15.64 GB\n"}
+,{"stream_name":"stdout","time":29.421431594,"data":"[+] Multi-GPU Cluster Ready: 31.27 GB Combined VRAM!\n"}
+,{"stream_name":"stdout","time":30.133373432,"data":"[+] Max drift (d1 + d2): 0.00000000 (Exactly 0.0)\n"}
+,{"stream_name":"stdout","time":30.464448952,"data":"[+] SwiGLU Split: d_ffn 128 -\u003e 256 | Forward Drift: 0.00000006\n"}
+,{"stream_name":"stdout","time":30.920253068,"data":"[+] MoE Upcycled: 4 experts created! Output shape: torch.Size([2, 8, 64])\n"}
+,{"stream_name":"stdout","time":30.999281995,"data":"[+] LoRA Split: Rank 4 -\u003e 8 | Drift: 0.00000001\n"}
+,{"stream_name":"stdout","time":32.385862051,"data":"[+] Training 3 comparative LLM configurations...\n"}
+,{"stream_name":"stdout","time":43.705482509,"data":"Scratch Val Loss:     4.9095 (Perplexity: 135.58)\n"}
+,{"stream_name":"stdout","time":43.705521685,"data":"Non-Disc Val Loss:    4.9077 (Perplexity: 135.33)\n"}
+,{"stream_name":"stdout","time":43.705526687,"data":"DPS-LLM Val Loss:     4.9203 (Perplexity: 137.04)\n"}
+,{"stream_name":"stdout","time":65.848686283,"data":"[+] Loading real pre-trained LLM: Qwen/Qwen2.5-0.5B-Instruct across 2 GPU(s)...\n"}
+,{"stream_name":"stderr","time":65.93476213,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":65.934794456,"data":"\n"}
+,{"stream_name":"stderr","time":65.934800399,"data":"Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.\n"}
+,{"stream_name":"stderr","time":68.027589834,"data":"[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n"}
+,{"stream_name":"stderr","time":68.027634328,"data":"\n"}
+,{"stream_name":"stderr","time":68.027640596,"data":"[transformers] `torch_dtype` is deprecated! Use `dtype` instead!\n"}
+,{"stream_name":"stdout","time":78.582582047,"data":"[+] Layers successfully sharded across GPUs:\n"}
+,{"stream_name":"stdout","time":78.582650623,"data":"    model.embed_tokens -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":78.58274215,"data":"    lm_head -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":78.582757262,"data":"    model.layers.0 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":78.582781678,"data":"    model.layers.1 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":78.582786425,"data":"    model.layers.2 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":78.582790773,"data":"    model.layers.3 -\u003e GPU 0\n"}
+,{"stream_name":"stdout","time":78.582794798,"data":"    ...\n"}
+,{"stream_name":"stdout","time":80.609308495,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":80.609348317,"data":"[*] BEFORE SPLITTING: Qwen/Qwen2.5-0.5B-Instruct\n"}
+,{"stream_name":"stdout","time":80.609354071,"data":"    Total Parameters:    494,032,768\n"}
+,{"stream_name":"stdout","time":80.609358657,"data":"    Intermediate Size:   4864\n"}
+,{"stream_name":"stdout","time":80.609363199,"data":"    Baseline Generation: \"Explain why the sky is blue in one concise sentence: The sky appears blue because it reflects sunlight, which contains all colors of the rainbow. This phenomenon occurs due to the scattering and absorption of light by particles\"\n"}
+,{"stream_name":"stdout","time":80.609370895,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":82.237201217,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":82.237244397,"data":"[*] AFTER SPLITTING: Qwen/Qwen2.5-0.5B-Instruct\n"}
+,{"stream_name":"stdout","time":82.23725104,"data":"    Total Parameters:    807,819,136 (+313,786,368)\n"}
+,{"stream_name":"stdout","time":82.237255309,"data":"    New Intermediate:    9728\n"}
+,{"stream_name":"stdout","time":82.237259436,"data":"    Max Logit Drift:     1.406250 (Functional Invariance Verified!)\n"}
+,{"stream_name":"stdout","time":82.237263312,"data":"    Post-Split Output:   \"Explain why the sky is blue in one concise sentence: The sky appears blue because it reflects sunlight, which contains all colors of light. This phenomenon is known as Rayleigh scattering and occurs due to the Earth\"\n"}
+,{"stream_name":"stdout","time":82.237268398,"data":"======================================================================\n"}
+,{"stream_name":"stdout","time":82.662925755,"data":"[+] Multi-GPU backward gradient pass succeeded! Loss: 4.2013\n"}
+,{"stream_name":"stdout","time":82.662966313,"data":"[+] Successfully upcycled and expanded a real pre-trained Foundation Model!\n"}
+,{"stream_name":"stdout","time":82.834363077,"data":"[+] All GPU memory released for Section 8 benchmarks.\n"}
+,{"stream_name":"stdout","time":85.351974359,"data":"[+] GPU 0 ready | free 15.42 GB\n"}
+,{"stream_name":"stdout","time":85.352033862,"data":"[+] GPU 1 ready | free 15.44 GB\n"}
+,{"stream_name":"stdout","time":85.967465615,"data":"[+] Llama-3.2-1B         llama    layers=16  d_model=2048  d_ffn=8192   precision=bf16_sr  C=0.01  shard=True\n"}
+,{"stream_name":"stdout","time":85.967507597,"data":"[*] PRESET=MEDIUM, group=part2c -\u003e 1 models x 2 datasets x 5 methods x 3 seeds = 30 runs, writing to /kaggle/working/results_part2c\n"}
+,{"stream_name":"stderr","time":127.780924951,"data":"[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.\n"}
+,{"stream_name":"stderr","time":127.780969122,"data":"\n"}
+,{"stream_name":"stderr","time":127.780975597,"data":"[transformers] Ignoring clean_up_tokenization_spaces=True for BPE tokenizer TokenizersBackend. The clean_up_tokenization post-processing step is designed for WordPiece tokenizers and is destructive for BPE (it strips spaces before punctuation). Set clean_up_tokenization_spaces=False to suppress this warning, or set clean_up_tokenization_spaces_for_bpe_even_though_it_will_corrupt_output=True to force cleanup anyway.\n"}
+,{"stream_name":"stdout","time":534.719952677,"data":"[GPU0] Llama-3.2-1B | GSM8K | Base (no split) | seed42              init 5.081 -\u003e final 3.409 (+32.91%) acc 4.0%  [7.4 min]\n"}
+,{"stream_name":"stdout","time":821.582070663,"data":"[GPU0] Llama-3.2-1B | GSM8K | Base (2x W_down lr) | seed42          init 5.081 -\u003e final 3.647 (+28.22%) acc 4.0%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":1299.828624597,"data":"[GPU0] Llama-3.2-1B | GSM8K | Naive split | seed42                  init 5.081 -\u003e final 3.654 (+28.08%) acc 2.0%  [8.0 min]\n"}
+,{"stream_name":"stdout","time":1778.018368512,"data":"[GPU0] Llama-3.2-1B | GSM8K | Gaussian split | seed42               init 5.078 -\u003e final 3.627 (+28.57%) acc 6.0%  [8.0 min]\n"}
+,{"stream_name":"stdout","time":2256.376770569,"data":"[GPU0] Llama-3.2-1B | GSM8K | DPS-LLM | seed42                      init 5.080 -\u003e final 3.652 (+28.11%) acc 2.0%  [8.0 min]\n"}
+,{"stream_name":"stdout","time":2539.992756504,"data":"[GPU0] Llama-3.2-1B | GSM8K | Base (no split) | seed43              init 5.081 -\u003e final 3.506 (+31.00%) acc 0.0%  [4.7 min]\n"}
+,{"stream_name":"stdout","time":2823.585244134,"data":"[GPU0] Llama-3.2-1B | GSM8K | Base (2x W_down lr) | seed43          init 5.081 -\u003e final 3.856 (+24.10%) acc 6.0%  [4.7 min]\n"}
+,{"stream_name":"stdout","time":3296.438727616,"data":"[GPU0] Llama-3.2-1B | GSM8K | Naive split | seed43                  init 5.081 -\u003e final 3.807 (+25.07%) acc 6.0%  [7.9 min]\n"}
+,{"stream_name":"stdout","time":3769.353814337,"data":"[GPU0] Llama-3.2-1B | GSM8K | Gaussian split | seed43               init 5.082 -\u003e final 3.835 (+24.52%) acc 2.0%  [7.9 min]\n"}
+,{"stream_name":"stdout","time":4242.038606909,"data":"[GPU0] Llama-3.2-1B | GSM8K | DPS-LLM | seed43                      init 5.081 -\u003e final 3.854 (+24.15%) acc 4.0%  [7.9 min]\n"}
+,{"stream_name":"stdout","time":4526.716299415,"data":"[GPU0] Llama-3.2-1B | GSM8K | Base (no split) | seed44              init 5.081 -\u003e final 3.459 (+31.92%) acc 6.0%  [4.7 min]\n"}
+,{"stream_name":"stdout","time":4811.271522689,"data":"[GPU0] Llama-3.2-1B | GSM8K | Base (2x W_down lr) | seed44          init 5.081 -\u003e final 3.724 (+26.71%) acc 6.0%  [4.7 min]\n"}
+,{"stream_name":"stdout","time":5285.667464536,"data":"[GPU0] Llama-3.2-1B | GSM8K | Naive split | seed44                  init 5.081 -\u003e final 3.697 (+27.25%) acc 10.0%  [7.9 min]\n"}
+,{"stream_name":"stdout","time":5760.346224627,"data":"[GPU0] Llama-3.2-1B | GSM8K | Gaussian split | seed44               init 5.082 -\u003e final 3.726 (+26.69%) acc 4.0%  [7.9 min]\n"}
+,{"stream_name":"stdout","time":6235.277115213,"data":"[GPU0] Llama-3.2-1B | GSM8K | DPS-LLM | seed44                      init 5.082 -\u003e final 3.717 (+26.85%) acc 2.0%  [7.9 min]\n"}
+,{"stream_name":"stdout","time":6354.950266209,"data":"[GPU0] Llama-3.2-1B | Alpaca | Base (no split) | seed42             init 8.271 -\u003e final 5.098 (+38.36%) acc nan%  [2.0 min]\n"}
+,{"stream_name":"stdout","time":6475.233611376,"data":"[GPU0] Llama-3.2-1B | Alpaca | Base (2x W_down lr) | seed42         init 8.271 -\u003e final 5.636 (+31.86%) acc nan%  [2.0 min]\n"}
+,{"stream_name":"stdout","time":6690.057528259,"data":"[GPU0] Llama-3.2-1B | Alpaca | Naive split | seed42                 init 8.265 -\u003e final 5.625 (+31.94%) acc nan%  [3.6 min]\n"}
+,{"stream_name":"stdout","time":6905.136960001,"data":"[GPU0] Llama-3.2-1B | Alpaca | Gaussian split | seed42              init 8.271 -\u003e final 5.630 (+31.94%) acc nan%  [3.6 min]\n"}
+,{"stream_name":"stdout","time":7120.400181389,"data":"[GPU0] Llama-3.2-1B | Alpaca | DPS-LLM | seed42                     init 8.273 -\u003e final 5.611 (+32.17%) acc nan%  [3.6 min]\n"}
+,{"stream_name":"stdout","time":7243.692883422,"data":"[GPU0] Llama-3.2-1B | Alpaca | Base (no split) | seed43             init 8.271 -\u003e final 5.091 (+38.45%) acc nan%  [2.0 min]\n"}
+,{"stream_name":"stdout","time":7366.948797598,"data":"[GPU0] Llama-3.2-1B | Alpaca | Base (2x W_down lr) | seed43         init 8.271 -\u003e final 5.563 (+32.74%) acc nan%  [2.0 min]\n"}
+,{"stream_name":"stdout","time":7589.203693243,"data":"[GPU0] Llama-3.2-1B | Alpaca | Naive split | seed43                 init 8.265 -\u003e final 5.556 (+32.78%) acc nan%  [3.7 min]\n"}
+,{"stream_name":"stdout","time":7811.090958981,"data":"[GPU0] Llama-3.2-1B | Alpaca | Gaussian split | seed43              init 8.270 -\u003e final 5.550 (+32.89%) acc nan%  [3.7 min]\n"}
+,{"stream_name":"stdout","time":8033.353833263,"data":"[GPU0] Llama-3.2-1B | Alpaca | DPS-LLM | seed43                     init 8.271 -\u003e final 5.561 (+32.76%) acc nan%  [3.7 min]\n"}
+,{"stream_name":"stdout","time":8156.404530685,"data":"[GPU0] Llama-3.2-1B | Alpaca | Base (no split) | seed44             init 8.271 -\u003e final 5.106 (+38.26%) acc nan%  [2.0 min]\n"}
+,{"stream_name":"stdout","time":8279.591389909,"data":"[GPU0] Llama-3.2-1B | Alpaca | Base (2x W_down lr) | seed44         init 8.271 -\u003e final 5.615 (+32.11%) acc nan%  [2.0 min]\n"}
+,{"stream_name":"stdout","time":8500.535673201,"data":"[GPU0] Llama-3.2-1B | Alpaca | Naive split | seed44                 init 8.265 -\u003e final 5.614 (+32.07%) acc nan%  [3.7 min]\n"}
+,{"stream_name":"stdout","time":8721.76248394,"data":"[GPU0] Llama-3.2-1B | Alpaca | Gaussian split | seed44              init 8.267 -\u003e final 5.615 (+32.08%) acc nan%  [3.7 min]\n"}
+,{"stream_name":"stdout","time":8943.185595951,"data":"[GPU0] Llama-3.2-1B | Alpaca | DPS-LLM | seed44                     init 8.272 -\u003e final 5.612 (+32.16%) acc nan%  [3.7 min]\n"}
+,{"stream_name":"stdout","time":8943.311279527,"data":"\n"}
+,{"stream_name":"stdout","time":8943.311301451,"data":"[+] Matrix finished in 2.46 h  (30/30 runs succeeded)\n"}
+,{"stream_name":"stdout","time":8943.311306462,"data":"\n"}
+,{"stream_name":"stdout","time":8943.31131078,"data":"=== MEAN +/- STD OVER SEEDS ===\n"}
+,{"stream_name":"stdout","time":8943.311316545,"data":"       Model Dataset              Method Precision    C  Params_M  InitPPL  FinalPPL  FinalPPL_std  PPLDrop  PPLDrop_std  InitAcc   Acc  Acc_std  n\n"}
+,{"stream_name":"stdout","time":8943.311324912,"data":"Llama-3.2-1B   GSM8K     Base (no split)   bf16_sr 0.00  1235.814    5.081     3.458         0.049   31.946        0.956     12.0 3.333    3.055  3\n"}
+,{"stream_name":"stdout","time":8943.311345702,"data":"Llama-3.2-1B   GSM8K Base (2x W_down lr)   bf16_sr 0.00  1235.814    5.081     3.742         0.106   26.344        2.080      NaN 5.333    1.155  3\n"}
+,{"stream_name":"stdout","time":8943.311350924,"data":"Llama-3.2-1B   GSM8K         Naive split   bf16_sr 0.00  2041.121    5.081     3.719         0.079   26.797        1.552      NaN 6.000    4.000  3\n"}
+,{"stream_name":"stdout","time":8943.311356375,"data":"Llama-3.2-1B   GSM8K      Gaussian split   bf16_sr 0.01  2041.121    5.080     3.729         0.104   26.592        2.024      NaN 4.000    2.000  3\n"}
+,{"stream_name":"stdout","time":8943.311361434,"data":"Llama-3.2-1B   GSM8K             DPS-LLM   bf16_sr 0.01  2041.121    5.081     3.741         0.103   26.371        2.023      NaN 2.667    1.155  3\n"}
+,{"stream_name":"stdout","time":8943.31136626,"data":"Llama-3.2-1B  Alpaca     Base (no split)   bf16_sr 0.00  1235.814    8.271     5.098         0.007   38.355        0.090      NaN   NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":8943.311397452,"data":"Llama-3.2-1B  Alpaca Base (2x W_down lr)   bf16_sr 0.00  1235.814    8.271     5.604         0.038   32.236        0.455      NaN   NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":8943.311401399,"data":"Llama-3.2-1B  Alpaca         Naive split   bf16_sr 0.00  2041.121    8.265     5.598         0.037   32.259        0.453      NaN   NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":8943.311405839,"data":"Llama-3.2-1B  Alpaca      Gaussian split   bf16_sr 0.01  2041.121    8.269     5.598         0.042   32.299        0.513      NaN   NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":8943.311410661,"data":"Llama-3.2-1B  Alpaca             DPS-LLM   bf16_sr 0.01  2041.121    8.272     5.595         0.029   32.365        0.345      NaN   NaN    0.000  3\n"}
+,{"stream_name":"stdout","time":8943.311415221,"data":"\n"}
+,{"stream_name":"stdout","time":8943.311419217,"data":"=== PAIRED TESTS (difference in relative PPL reduction, percentage points; A - B) ===\n"}
+,{"stream_name":"stdout","time":8943.311423731,"data":"       Model Dataset              A                   B  MeanDiff_pp A_wins  p_value\n"}
+,{"stream_name":"stdout","time":8943.311427568,"data":"Llama-3.2-1B   GSM8K        DPS-LLM         Naive split      -0.4261    1/3   0.2623\n"}
+,{"stream_name":"stdout","time":8943.311433165,"data":"Llama-3.2-1B   GSM8K Gaussian split         Naive split      -0.2054    1/3   0.6157\n"}
+,{"stream_name":"stdout","time":8943.31143741,"data":"Llama-3.2-1B   GSM8K        DPS-LLM      Gaussian split      -0.2208    1/3   0.3772\n"}
+,{"stream_name":"stdout","time":8943.311441099,"data":"Llama-3.2-1B   GSM8K    Naive split Base (2x W_down lr)       0.4538    2/3   0.2941\n"}
+,{"stream_name":"stdout","time":8943.311445079,"data":"Llama-3.2-1B   GSM8K        DPS-LLM Base (2x W_down lr)       0.0277    2/3   0.7387\n"}
+,{"stream_name":"stdout","time":8943.311449259,"data":"Llama-3.2-1B  Alpaca        DPS-LLM         Naive split       0.1053    2/3   0.2837\n"}
+,{"stream_name":"stdout","time":8943.311453324,"data":"Llama-3.2-1B  Alpaca Gaussian split         Naive split       0.0397    3/3   0.3749\n"}
+,{"stream_name":"stdout","time":8943.311457309,"data":"Llama-3.2-1B  Alpaca        DPS-LLM      Gaussian split       0.0656    2/3   0.5936\n"}
+,{"stream_name":"stdout","time":8943.311461515,"data":"Llama-3.2-1B  Alpaca    Naive split Base (2x W_down lr)       0.0232    2/3   0.5931\n"}
+,{"stream_name":"stdout","time":8943.311465659,"data":"Llama-3.2-1B  Alpaca        DPS-LLM Base (2x W_down lr)       0.1284    3/3   0.3050\n"}
+,{"stream_name":"stdout","time":8943.311469367,"data":"\n"}
+,{"stream_name":"stdout","time":8943.311472775,"data":"=== LaTeX rows for Table 1 (mean +/- std) ===\n"}
+,{"stream_name":"stdout","time":8943.311476335,"data":"Llama-3.2-1B \u0026 GSM8K \u0026 Base (no split) \u0026 1235.8M \u0026 5.08 \u0026 3.46 $\\pm$ 0.05 \u0026 31.95 $\\pm$ 0.96 \u0026 3.3 $\\pm$ 3.1 \\\\\n"}
+,{"stream_name":"stdout","time":8943.311481067,"data":"Llama-3.2-1B \u0026 GSM8K \u0026 Base (2x W_down lr) \u0026 1235.8M \u0026 5.08 \u0026 3.74 $\\pm$ 0.11 \u0026 26.34 $\\pm$ 2.08 \u0026 5.3 $\\pm$ 1.2 \\\\\n"}
+,{"stream_name":"stdout","time":8943.311485378,"data":"Llama-3.2-1B \u0026 GSM8K \u0026 Naive split \u0026 2041.1M \u0026 5.08 \u0026 3.72 $\\pm$ 0.08 \u0026 26.80 $\\pm$ 1.55 \u0026 6.0 $\\pm$ 4.0 \\\\\n"}
+,{"stream_name":"stdout","time":8943.311489565,"data":"Llama-3.2-1B \u0026 GSM8K \u0026 Gaussian split \u0026 2041.1M \u0026 5.08 \u0026 3.73 $\\pm$ 0.10 \u0026 26.59 $\\pm$ 2.02 \u0026 4.0 $\\pm$ 2.0 \\\\\n"}
+,{"stream_name":"stdout","time":8943.311493717,"data":"Llama-3.2-1B \u0026 GSM8K \u0026 DPS-LLM \u0026 2041.1M \u0026 5.08 \u0026 3.74 $\\pm$ 0.10 \u0026 26.37 $\\pm$ 2.02 \u0026 2.7 $\\pm$ 1.2 \\\\\n"}
+,{"stream_name":"stdout","time":8943.311502565,"data":"Llama-3.2-1B \u0026 Alpaca \u0026 Base (no split) \u0026 1235.8M \u0026 8.27 \u0026 5.10 $\\pm$ 0.01 \u0026 38.36 $\\pm$ 0.09 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":8943.311507397,"data":"Llama-3.2-1B \u0026 Alpaca \u0026 Base (2x W_down lr) \u0026 1235.8M \u0026 8.27 \u0026 5.60 $\\pm$ 0.04 \u0026 32.24 $\\pm$ 0.46 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":8943.311512625,"data":"Llama-3.2-1B \u0026 Alpaca \u0026 Naive split \u0026 2041.1M \u0026 8.26 \u0026 5.60 $\\pm$ 0.04 \u0026 32.26 $\\pm$ 0.45 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":8943.311517244,"data":"Llama-3.2-1B \u0026 Alpaca \u0026 Gaussian split \u0026 2041.1M \u0026 8.27 \u0026 5.60 $\\pm$ 0.04 \u0026 32.30 $\\pm$ 0.51 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":8943.311522272,"data":"Llama-3.2-1B \u0026 Alpaca \u0026 DPS-LLM \u0026 2041.1M \u0026 8.27 \u0026 5.59 $\\pm$ 0.03 \u0026 32.36 $\\pm$ 0.35 \u0026 -- \\\\\n"}
+,{"stream_name":"stdout","time":8943.311526419,"data":"\n"}
+,{"stream_name":"stdout","time":8943.311529772,"data":"[+] Saved: benchmark_results.csv, benchmark_summary.csv, benchmark_paired_tests.csv, loss_histories.json, symmetry_histories.json, benchmark_config.json\n"}
+,{"stream_name":"stdout","time":8943.589723015,"data":"[*] 30 runs in benchmark_results.csv; per model/method:\n"}
+,{"stream_name":"stdout","time":8943.589748671,"data":"Model         Method             \n"}
+,{"stream_name":"stdout","time":8943.589753831,"data":"Llama-3.2-1B  Base (2x W_down lr)    6\n"}
+,{"stream_name":"stdout","time":8943.589770899,"data":"              Base (no split)        6\n"}
+,{"stream_name":"stdout","time":8943.589775351,"data":"              DPS-LLM                6\n"}
+,{"stream_name":"stdout","time":8943.58977898,"data":"              Gaussian split         6\n"}
+,{"stream_name":"stdout","time":8943.589782644,"data":"              Naive split            6\n"}
+,{"stream_name":"stdout","time":8946.621603348,"data":"[+] Figures: benchmark_ppl_seeds.png, benchmark_gsm8k_accuracy.png, benchmark_loss_convergence.png, benchmark_symmetry_tracking.png\n"}
+,{"stream_name":"stdout","time":9234.095762692,"data":"[LR] Llama-3.2-1B         Base (no split)  lr=1e-05   5.081 -\u003e 3.238 (+36.28%)  acc 2.0%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":9712.329592529,"data":"[LR] Llama-3.2-1B         DPS-LLM          lr=1e-05   5.080 -\u003e 3.303 (+34.98%)  acc 8.0%  [8.0 min]\n"}
+,{"stream_name":"stdout","time":9999.295781831,"data":"[LR] Llama-3.2-1B         Base (no split)  lr=5e-05   5.081 -\u003e 4.263 (+16.09%)  acc 0.0%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":10477.77298423,"data":"[LR] Llama-3.2-1B         DPS-LLM          lr=5e-05   5.080 -\u003e 4.999 (+1.59%)  acc 0.0%  [8.0 min]\n"}
+,{"stream_name":"stdout","time":10764.45974129,"data":"[LR] Llama-3.2-1B         Base (no split)  lr=0.0001  5.081 -\u003e 5.886 (-15.84%)  acc 4.0%  [4.8 min]\n"}
+,{"stream_name":"stdout","time":11242.769437638,"data":"[LR] Llama-3.2-1B         DPS-LLM          lr=0.0001  5.080 -\u003e 7.630 (-50.21%)  acc 2.0%  [8.0 min]\n"}
+,{"stream_name":"stdout","time":11242.791939962,"data":"\n"}
+,{"stream_name":"stdout","time":11242.791968154,"data":"=== RELATIVE PPL REDUCTION (%) vs LEARNING RATE ( GSM8K , seed 42 ) ===\n"}
+,{"stream_name":"stdout","time":11242.791974562,"data":"LR                            0.00001  0.00002  0.00005  0.00010\n"}
+,{"stream_name":"stdout","time":11242.791979747,"data":"Model        Method                                             \n"}
+,{"stream_name":"stdout","time":11242.791985163,"data":"Llama-3.2-1B Base (no split)    36.28    32.91    16.09   -15.84\n"}
+,{"stream_name":"stdout","time":11242.792026709,"data":"             DPS-LLM            34.98    28.11     1.59   -50.21\n"}
+,{"stream_name":"stdout","time":11242.792044734,"data":"\n"}
+,{"stream_name":"stdout","time":11242.792048493,"data":"=== BEST LEARNING RATE PER MODEL AND METHOD ===\n"}
+,{"stream_name":"stdout","time":11242.792052116,"data":"       Model          Method      LR  PPLDrop  Acc\n"}
+,{"stream_name":"stdout","time":11242.792055684,"data":"Llama-3.2-1B Base (no split) 0.00001    36.28  2.0\n"}
+,{"stream_name":"stdout","time":11242.792059245,"data":"Llama-3.2-1B         DPS-LLM 0.00001    34.98  8.0\n"}
+,{"stream_name":"stdout","time":11242.792062938,"data":"[+] Saved lr_sweep_results.csv\n"}
+,{"stream_name":"stderr","time":11249.145722555,"data":"/usr/local/lib/python3.13/dist-packages/mistune.py:435: SyntaxWarning: invalid escape sequence '\\|'\n"}
+,{"stream_name":"stderr","time":11249.145758026,"data":"  cells[i][c] = re.sub('\\\\\\\\\\|', '|', cell)\n"}
+,{"stream_name":"stderr","time":11249.351504057,"data":"/usr/local/lib/python3.13/dist-packages/nbconvert/filters/filter_links.py:36: SyntaxWarning: invalid escape sequence '\\_'\n"}
+,{"stream_name":"stderr","time":11249.351536177,"data":"  text = re.sub(r'_', '\\_', text) # Escape underscores in display text\n"}
+,{"stream_name":"stderr","time":11250.166822273,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to notebook\n"}
+,{"stream_name":"stderr","time":11250.386282535,"data":"[NbConvertApp] Writing 2375116 bytes to __notebook__.ipynb\n"}
+,{"stream_name":"stderr","time":11252.836622533,"data":"[NbConvertApp] Converting notebook __notebook__.ipynb to html\n"}
+,{"stream_name":"stderr","time":11253.880850143,"data":"[NbConvertApp] Support files will be in __results___files/\n"}
+,{"stream_name":"stderr","time":11253.880876118,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":11253.881175937,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":11253.881421329,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":11253.881621628,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":11253.882068613,"data":"[NbConvertApp] Making directory __results___files\n"}
+,{"stream_name":"stderr","time":11253.882359702,"data":"[NbConvertApp] Writing 1286878 bytes to __results__.html\n"}
+]
