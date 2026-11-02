@@ -1,0 +1,51 @@
+% =============================================================================
+% DPS-LLM paper, IJCAI-27 supplementary material version. The text is shared: edit body.tex and appendix.tex.
+% Anonymous submission:  pdflatex paper_ijcai_supp && bibtex paper_ijcai_supp && pdflatex paper_ijcai_supp && pdflatex paper_ijcai_supp
+% Non-anonymous version: the same with  pdflatex "\def\FINAL{1}\input{paper_ijcai_supp}"
+%   (build_all.sh builds both for every venue into build/).
+% Build paper_ijcai first: figure references resolve through its .aux (xr package).
+% =============================================================================
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+\usepackage{ijcai27}
+\usepackage{times}
+\usepackage[hidelinks]{hyperref}
+\usepackage{xr}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{adjustbox}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\ifdefined\FINAL\externaldocument{paper_ijcai_final}\else\externaldocument{paper_ijcai}\fi
+\ifdefined\FINAL
+  \newcommand{\repourl}{\url{https://github.com/mirfan899/parameter-splitting-llm}}
+\else
+  % anonymised mirror of the repository (anonymous.4open.science) for review
+  \newcommand{\repourl}{\url{https://anonymous.4open.science/r/dps-llm}}
+\fi
+\newcommand{\citep}{\cite}
+\newcommand{\citet}[1]{\citeauthor{#1}~\shortcite{#1}}
+
+\title{Supplementary Material: Function-Preserving Width Splitting of Pre-trained LLMs: Exact Expansion, a Hidden Learning-Rate Change, and the Limits of Symmetry-Breaking Noise}
+\ifdefined\FINAL
+\author{Muhammad Irfan \and M. Ali Tahir
+\affiliations School of Electrical Engineering and Computer Science (SEECS), National University of Sciences and Technology (NUST), Islamabad, Pakistan}
+\else
+\author{Anonymous submission}
+\fi
+
+\begin{document}
+\maketitle
+\appendix
+\input{appendix}
+
+\bibliographystyle{named}
+\bibliography{references}
+\end{document}

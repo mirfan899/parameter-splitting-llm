@@ -1,5 +1,9 @@
-% Shared text of the paper, \input by paper_acl.tex (ACL/ARR and arXiv), paper_colm.tex,
-% paper_tmlr.tex and paper_iclr.tex. Edit the paper here, not in the venue files.
+% Shared text of the paper, \input by every venue file (paper_acl.tex for ARR and arXiv,
+% paper_icml.tex, paper_ijcai.tex, paper_colm.tex, paper_tmlr.tex). Edit the paper here.
+% A venue file may predefine these before \input{body}:
+\providecommand{\figwidth}{\columnwidth}          % width of single-column figures
+\providecommand{\appref}[1]{Appendix~\ref{#1}}   % IJCAI: appendix is supplementary
+\providecommand{\ethicsheading}{Ethics Statement} % ICML: Impact Statement
 
 \begin{abstract}
 Growing a pre-trained large language model (LLM) in place, instead of training a larger one from scratch, needs an expansion that preserves the model's function and a way to make the added parameters useful.
@@ -29,7 +33,7 @@ We adapt \emph{Discriminative Parameter Splitting} \citep{irfan2021discriminativ
     \item \textbf{A controlled benchmark.} On eight open-weight models from four families (360M--1.7B), two datasets, five conditions, three seeds, per-model learning-rate sweeps and ablations, we find no gain from added capacity and no symmetry breaking during fine-tuning.
     \item \textbf{A precision pitfall.} In bfloat16 the default perturbation is rounded away entirely; we give a stochastic-rounding protocol under which it survives.
 \end{itemize}
-We also describe, and release code for, two further regimes of the same operator---dense-to-Mixture-of-Experts (MoE) upcycling and LoRA rank doubling---which we leave for empirical evaluation in future work (Appendix~\ref{app:regimes}).
+We also describe, and release code for, two further regimes of the same operator---dense-to-Mixture-of-Experts (MoE) upcycling and LoRA rank doubling---which we leave for empirical evaluation in future work (\appref{app:regimes}).
 
 \begin{figure}[t]
     \centering
@@ -50,10 +54,10 @@ DPS-LLM belongs to this family but targets the gated SwiGLU block specifically, 
 Splitting steepest descent \citep{liu2019splitting}, Firefly descent \citep{wu2020firefly} and GradMax \citep{evci2022gradmax} choose \emph{which} neurons to split and \emph{how} to perturb the copies using second-order or gradient information. These methods are principled but require extra computation per split; DPS-LLM instead splits every neuron and uses a closed-form, gradient-free perturbation whose only statistic is the standard deviation of the weight matrix.
 
 \paragraph{Mixture-of-Experts upcycling.}
-Sparse upcycling \citep{komatsuzaki2022sparse} initialises MoE experts \citep{shazeer2017outrageously,lepikhin2021gshard,fedus2022switch} by cloning a dense MLP, and \citet{he2024upcycling} study this recipe at scale; Mixtral \citep{jiang2024mixtral} is a widely used dense-to-sparse architecture. Cloned experts are initially identical, so the same symmetry problem arises; our anti-symmetric noise is directly applicable (Appendix~\ref{app:regimes}).
+Sparse upcycling \citep{komatsuzaki2022sparse} initialises MoE experts \citep{shazeer2017outrageously,lepikhin2021gshard,fedus2022switch} by cloning a dense MLP, and \citet{he2024upcycling} study this recipe at scale; Mixtral \citep{jiang2024mixtral} is a widely used dense-to-sparse architecture. Cloned experts are initially identical, so the same symmetry problem arises; our anti-symmetric noise is directly applicable (\appref{app:regimes}).
 
 \paragraph{Adapter rank growth.}
-LoRA \citep{hu2021lora} fixes the adapter rank in advance; AdaLoRA \citep{zhang2023adalora} and DyLoRA \citep{valipour2023dylora} adapt the rank during training. Rank doubling by parameter splitting (Appendix~\ref{app:regimes}) is a complementary, function-preserving way to increase adapter capacity.
+LoRA \citep{hu2021lora} fixes the adapter rank in advance; AdaLoRA \citep{zhang2023adalora} and DyLoRA \citep{valipour2023dylora} adapt the rank during training. Rank doubling by parameter splitting (\appref{app:regimes}) is a complementary, function-preserving way to increase adapter capacity.
 
 \paragraph{Discriminative splitting in speech.}
 \citet{irfan2021discriminative} grew LSTM-RNN acoustic models by duplicating rows and columns of weight matrices and injecting a polarity-preserving perturbation, reporting faster convergence, less over-training and a 1.2\% absolute word-error-rate reduction over Xavier initialisation on a Kaldi/VoxForge recipe. This paper transfers that recipe to Transformers and adds the invariance scaling and the anti-symmetric pairing.
@@ -147,7 +151,7 @@ The split is applied in place to every decoder layer of a Hugging Face checkpoin
 We use eight instruction-tuned open-weight checkpoints with SwiGLU blocks of the form \eqref{eq:swiglu}: SmolLM-360M, SmolLM2-360M and SmolLM2-1.7B \citep{allal2024smollm,allal2025smollm2}, Qwen2.5-0.5B and Qwen2.5-1.5B \citep{qwen2024technical}, TinyLlama-1.1B \citep{zhang2024tinyllama}, Llama-3.2-1B \citep{grattafiori2024llama3}, and OLMo-2-1B \citep{olmo2024olmo2}. The three models below 1B parameters are fine-tuned entirely in float32, where the $C{=}10^{-4}$ perturbation is representable. Models of 1B parameters and more are fine-tuned in bfloat16 to stay within the memory of two 16\,GB GPUs after splitting, with bfloat16 weights, an AdamW update computed in float32 and written back with stochastic rounding \citep{gupta2015deep,zamirai2020revisiting} (so updates smaller than half a unit in the last place are applied in expectation), and $C{=}10^{-2}$, because the split itself is rounded to nearest and a $C{=}10^{-4}$ perturbation would survive in only 0.6\% of entries (Section~\ref{sec:results}). To compare the two protocols on one checkpoint, SmolLM-360M is also run under the bfloat16 protocol (marked $^\dagger$).
 
 \paragraph{Data.}
-GSM8K \citep{cobbe2021gsm8k} and Alpaca-Cleaned \citep{taori2023alpaca,yahma2023alpacacleaned}, rendered with fixed templates (Appendix~\ref{app:prompts}). For GSM8K we fine-tune on 256 examples drawn from the training split and measure perplexity on the first 100 test problems. For Alpaca-Cleaned, which has no test split, a fixed permutation of the training split provides 256 fine-tuning and 100 disjoint validation examples. GSM8K accuracy is exact match of the final number, generated greedily (at most 256 new tokens) for the first 50 test problems, before fine-tuning once per model and after fine-tuning for every run.
+GSM8K \citep{cobbe2021gsm8k} and Alpaca-Cleaned \citep{taori2023alpaca,yahma2023alpacacleaned}, rendered with fixed templates (\appref{app:prompts}). For GSM8K we fine-tune on 256 examples drawn from the training split and measure perplexity on the first 100 test problems. For Alpaca-Cleaned, which has no test split, a fixed permutation of the training split provides 256 fine-tuning and 100 disjoint validation examples. GSM8K accuracy is exact match of the final number, generated greedily (at most 256 new tokens) for the first 50 test problems, before fine-tuning once per model and after fine-tuning for every run.
 
 \paragraph{Conditions.}
 (1) \emph{Base}: the unmodified checkpoint. (2) \emph{Base, 2$\times$ lr $W_{down}$}: the unmodified checkpoint with a doubled learning rate on every down projection, the matched control of Proposition~\ref{prop:lr}. (3) \emph{Naive split}: Eqs.~\eqref{eq:rows}--\eqref{eq:cols} with $\Delta{=}0$. (4) \emph{Gaussian split}: i.i.d.\ Gaussian noise drawn independently for each copy, as in Net2Net \citep{chen2015net2net}, with standard deviation $C\sigma_W/\sqrt{12}$ so that its RMS matches the calculated noise. (5) \emph{DPS-LLM}: Calculated Anti-Symmetric Noise.
@@ -162,6 +166,8 @@ An earlier run used pure bfloat16 with round-to-nearest updates, no matched cont
 \centering
 \footnotesize
 \setlength{\tabcolsep}{4pt}
+\caption{Fine-tuning recipe shared by all benchmark runs.}
+\label{tab:hparams}
 \begin{tabular}{@{}lp{0.62\columnwidth}@{}}
 \toprule
 \textbf{Setting} & \textbf{Value} \\
@@ -181,8 +187,6 @@ Seeds & 42, 43, 44 (noise draw, example order); data seed 0 \\
 Software & PyTorch \citep{paszke2019pytorch}, Transformers \citep{wolf2020transformers}, Datasets \citep{lhoest2021datasets} \\
 \bottomrule
 \end{tabular}
-\caption{Fine-tuning recipe shared by all benchmark runs.}
-\label{tab:hparams}
 \end{table}
 
 \begin{figure*}[t]
@@ -224,27 +228,27 @@ With round-to-nearest bfloat16, the $C{=}10^{-4}$ perturbation is absorbed by ro
 \centering
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{adjustbox}{max width=\columnwidth}\input{tables/lr.tex}\end{adjustbox}
 \caption{\textbf{Best learning rate per model} (GSM8K, seed 42; sweep over $\{1,2,5,10\}\times10^{-5}$): relative perplexity reduction (\%) of the seed and of DPS-LLM, each at its own best rate.}
 \label{tab:lr}
+\begin{adjustbox}{max width=\columnwidth}\input{tables/lr.tex}\end{adjustbox}
 \end{table}
 
 \begin{table}[t]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{4pt}
-\begin{adjustbox}{max width=\columnwidth}\input{tables/accuracy.tex}\end{adjustbox}
 \caption{\textbf{GSM8K exact-match accuracy (\%)} on 50 test problems before fine-tuning and after it (mean over seeds).}
 \label{tab:accuracy}
+\begin{adjustbox}{max width=\columnwidth}\input{tables/accuracy.tex}\end{adjustbox}
 \end{table}
 
 \begin{table}[t]
 \centering
 \footnotesize
 \setlength{\tabcolsep}{3pt}
-\begin{adjustbox}{max width=\columnwidth}\input{tables/ablation.tex}\end{adjustbox}
 \caption{\textbf{Ablations} on SmolLM-360M/GSM8K, float32, seed 42, 50 steps. \emph{Init drift}: change of validation perplexity caused by the split (base: 5.13). \emph{Red.}: relative perplexity reduction after fine-tuning. \emph{Pair dist.}: relative distance between paired neurons after fine-tuning.}
 \label{tab:ablation}
+\begin{adjustbox}{max width=\columnwidth}\input{tables/ablation.tex}\end{adjustbox}
 \end{table}
 
 % -----------------------------------------------------------------------------
@@ -259,5 +263,5 @@ The function-preserving half of DPS-LLM works as designed: placing the factor $\
 \textbf{Scope.} Only width splitting of the MLP was evaluated, with only the MLP parameters trainable; depth growth, attention-head splitting, the MoE and LoRA regimes, and full-parameter fine-tuning are untested. We measure perplexity and GSM8K exact match but not instruction-following quality for Alpaca-Cleaned.
 \textbf{Data provenance.} The Alpaca-Cleaned validation examples come from its training split; they are unseen during our fine-tuning but may have been seen during the checkpoints' original training.
 
-\section*{Ethics Statement}
+\section*{\ethicsheading}
 This work modifies the architecture of publicly released language models and uses two public datasets (GSM8K, MIT licence; Alpaca-Cleaned, CC~BY-NC~4.0) and eight public checkpoints (Qwen2.5-0.5B-Instruct, Qwen2.5-1.5B-Instruct, SmolLM-360M-Instruct, SmolLM2-360M-Instruct, SmolLM2-1.7B-Instruct, TinyLlama-1.1B-Chat and OLMo-2-0425-1B-Instruct, all Apache~2.0; Llama-3.2-1B-Instruct, Llama~3.2 Community License, used under its terms for research). Growing a model does not change the biases or safety properties of its seed, and a grown model inherits any limitations of the original checkpoint; practitioners should re-run their safety evaluations after expansion. All experiments ran on a free cloud GPU tier with a small compute footprint (about 23 hours on a two-T4 instance for the benchmark, sweeps and ablations, and 4 for the pilot). No human subjects or personal data were involved.

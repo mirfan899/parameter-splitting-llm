@@ -1,0 +1,81 @@
+% =============================================================================
+% DPS-LLM paper, IJCAI-27 version. The text is shared: edit body.tex and appendix.tex.
+% Anonymous submission:  pdflatex paper_ijcai && bibtex paper_ijcai && pdflatex paper_ijcai && pdflatex paper_ijcai
+% Non-anonymous version: the same with  pdflatex "\def\FINAL{1}\input{paper_ijcai}"
+%   (build_all.sh builds both for every venue into build/).
+% Main track: 7 content pages (appendices count), plus 2 pages for references and the
+% Ethical Statement. The appendix goes into paper_ijcai_supp.tex, uploaded as supplementary material.
+% =============================================================================
+\documentclass{article}
+\pdfpagewidth=8.5in
+\pdfpageheight=11in
+\usepackage{ijcai27}
+\usepackage{times}
+\usepackage[hidelinks]{hyperref}
+\usepackage[utf8]{inputenc}
+\usepackage[small]{caption}
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{adjustbox}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\ifdefined\FINAL\else
+  \usepackage[switch]{lineno}
+  \linenumbers
+  % lineno does not number around amsmath displays on its own; without this the
+  % column detection breaks and numbers land in the gutter
+  \newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+    \expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+    \expandafter\let\csname oldend#1\expandafter\endcsname\csname end#1\endcsname
+    \renewenvironment{#1}{\linenomath\csname old#1\endcsname}{\csname oldend#1\endcsname\endlinenomath}}
+  \newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+    \patchAmsMathEnvironmentForLineno{#1}\patchAmsMathEnvironmentForLineno{#1*}}
+  \AtBeginDocument{%
+    \patchBothAmsMathEnvironmentsForLineno{equation}%
+    \patchBothAmsMathEnvironmentsForLineno{align}%
+    \patchBothAmsMathEnvironmentsForLineno{gather}%
+    \patchBothAmsMathEnvironmentsForLineno{multline}}
+\fi
+\urlstyle{same}
+\ifdefined\FINAL
+  \newcommand{\repourl}{\url{https://github.com/mirfan899/parameter-splitting-llm}}
+\else
+  % anonymised mirror of the repository (anonymous.4open.science) for review
+  \newcommand{\repourl}{\url{https://anonymous.4open.science/r/dps-llm}}
+\fi
+% IJCAI's citation commands (named.bst): \cite gives [Author, Year]
+\newcommand{\citep}{\cite}
+\newcommand{\citet}[1]{\citeauthor{#1}~\shortcite{#1}}
+% the appendix is submitted as a separate supplementary file
+\newcommand{\appref}[1]{the supplementary material}
+\newcommand{\ethicsheading}{Ethical Statement}
+
+\title{Function-Preserving Width Splitting of Pre-trained LLMs: Exact Expansion, a Hidden Learning-Rate Change, and the Limits of Symmetry-Breaking Noise}
+
+\ifdefined\FINAL
+\author{
+Muhammad Irfan \and M. Ali Tahir
+\affiliations
+School of Electrical Engineering and Computer Science (SEECS), National University of Sciences and Technology (NUST), Islamabad, Pakistan
+\emails
+\{mirfan.mscs15seecs, ali.tahir\}@seecs.edu.pk
+}
+\else
+\author{Anonymous submission}
+\fi
+
+\begin{document}
+\maketitle
+
+\input{body}
+
+\bibliographystyle{named}
+\bibliography{references}
+
+\end{document}

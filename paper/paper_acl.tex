@@ -17,6 +17,7 @@
 % =============================================================================
 \documentclass[11pt]{article}
 
+\ifdefined\FINAL\def\ARXIV{1}\fi  % build_all.sh: non-anonymous build
 \ifdefined\ARXIV
   \usepackage[final]{acl}
   \newcommand{\repourl}{\url{https://github.com/mirfan899/parameter-splitting-llm}}

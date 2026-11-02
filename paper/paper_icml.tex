@@ -1,0 +1,72 @@
+% =============================================================================
+% DPS-LLM paper, ICML 2026 template (update to icml2027.sty when ICML 2027 releases it) version. The text is shared: edit body.tex and appendix.tex.
+% Anonymous submission:  pdflatex paper_icml && bibtex paper_icml && pdflatex paper_icml && pdflatex paper_icml
+% Non-anonymous version: the same with  pdflatex "\def\FINAL{1}\input{paper_icml}"
+%   (build_all.sh builds both for every venue into build/).
+% Main body <= 8 pages; references, Impact Statement and appendix do not count.
+% =============================================================================
+\documentclass{article}
+\usepackage{microtype}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{hyperref}
+\ifdefined\FINAL
+  \usepackage[preprint]{icml2026}
+\else
+  \usepackage{icml2026}
+\fi
+\usepackage{url}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{booktabs}
+\usepackage{graphicx}
+\usepackage{microtype}
+\usepackage{array}
+\usepackage{adjustbox}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\ifdefined\FINAL
+  \newcommand{\repourl}{\url{https://github.com/mirfan899/parameter-splitting-llm}}
+\else
+  % anonymised mirror of the repository (anonymous.4open.science) for review
+  \newcommand{\repourl}{\url{https://anonymous.4open.science/r/dps-llm}}
+\fi
+\newcommand{\ethicsheading}{Impact Statement}
+
+\icmltitlerunning{Function-Preserving Width Splitting of Pre-trained LLMs}
+
+\begin{document}
+
+\twocolumn[
+  \icmltitle{Function-Preserving Width Splitting of Pre-trained LLMs: \\
+    Exact Expansion, a Hidden Learning-Rate Change, \\
+    and the Limits of Symmetry-Breaking Noise}
+
+  \begin{icmlauthorlist}
+    \icmlauthor{Muhammad Irfan}{nust}
+    \icmlauthor{M. Ali Tahir}{nust}
+  \end{icmlauthorlist}
+
+  \icmlaffiliation{nust}{School of Electrical Engineering and Computer Science (SEECS), National University of Sciences and Technology (NUST), Islamabad, Pakistan}
+
+  \icmlcorrespondingauthor{Muhammad Irfan}{mirfan.mscs15seecs@seecs.edu.pk}
+
+  \icmlkeywords{Model Growth, Large Language Models, SwiGLU, Parameter Splitting, Function Preservation}
+
+  \vskip 0.3in
+]
+
+\printAffiliationsAndNotice{}
+
+\input{body}
+
+\bibliography{references}
+\bibliographystyle{icml2026}
+
+\newpage
+\appendix
+\onecolumn
+\input{appendix}
+
+\end{document}

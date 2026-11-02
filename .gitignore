@@ -17,3 +17,12 @@ venv/
 *.out
 *.toc
 *.synctex.gz
+
+# venue PDFs are built into paper/build/ by paper/build_all.sh; only the ACL/arXiv PDFs are tracked
+paper/paper_colm.pdf
+paper/paper_iclr.pdf
+paper/paper_icml.pdf
+paper/paper_ijcai.pdf
+paper/paper_ijcai_supp.pdf
+paper/paper_tmlr.pdf
+paper/arxiv_source.tar.gz

@@ -1,11 +1,16 @@
 % =============================================================================
-% DPS-LLM paper, COLM version. The text is shared with the ACL version:
-% edit body.tex and appendix.tex, not this file.
-% Build: pdflatex paper_colm && bibtex paper_colm && pdflatex paper_colm && pdflatex paper_colm
-% [preprint] shows authors; use [submission] for anonymous review.
+% DPS-LLM paper, COLM version. The text is shared: edit body.tex and appendix.tex.
+% Anonymous submission:  pdflatex paper_colm && bibtex paper_colm && pdflatex paper_colm && pdflatex paper_colm
+% Non-anonymous version: the same with  pdflatex "\def\FINAL{1}\input{paper_colm}"
+%   (build_all.sh builds both for every venue into build/).
+% Main text <= 9 pages; references and appendix do not count.
 % =============================================================================
 \documentclass{article}
-\usepackage[preprint]{colm2026_conference}
+\ifdefined\FINAL
+  \usepackage[preprint]{colm2026_conference}
+\else
+  \usepackage[submission]{colm2026_conference}
+\fi
 \usepackage{hyperref}
 \usepackage{url}
 \usepackage{amsmath}
@@ -20,7 +25,12 @@
 \newtheorem{proposition}{Proposition}
 % single-column layout: keep column-width figures at a readable size
 \newcommand{\figwidth}{0.62\textwidth}
-\newcommand{\repourl}{\url{https://github.com/mirfan899/parameter-splitting-llm}}
+\ifdefined\FINAL
+  \newcommand{\repourl}{\url{https://github.com/mirfan899/parameter-splitting-llm}}
+\else
+  % anonymised mirror of the repository (anonymous.4open.science) for review
+  \newcommand{\repourl}{\url{https://anonymous.4open.science/r/dps-llm}}
+\fi
 
 \title{Function-Preserving Width Splitting of Pre-trained LLMs: Exact Expansion, a Hidden Learning-Rate Change, and the Limits of Symmetry-Breaking Noise}
 
