@@ -265,3 +265,10 @@ The function-preserving half of DPS-LLM works as designed: placing the factor $\
 
 \section*{\ethicsheading}
 This work modifies the architecture of publicly released language models and uses two public datasets (GSM8K, MIT licence; Alpaca-Cleaned, CC~BY-NC~4.0) and eight public checkpoints (Qwen2.5-0.5B-Instruct, Qwen2.5-1.5B-Instruct, SmolLM-360M-Instruct, SmolLM2-360M-Instruct, SmolLM2-1.7B-Instruct, TinyLlama-1.1B-Chat and OLMo-2-0425-1B-Instruct, all Apache~2.0; Llama-3.2-1B-Instruct, Llama~3.2 Community License, used under its terms for research). Growing a model does not change the biases or safety properties of its seed, and a grown model inherits any limitations of the original checkpoint; practitioners should re-run their safety evaluations after expansion. All experiments ran on a free cloud GPU tier with a small compute footprint (about 23 hours on a two-T4 instance for the benchmark, sweeps and ablations, and 4 for the pilot). No human subjects or personal data were involved.
+
+\ifdefined\FINAL\def\showacknowledgements{}\fi
+\ifdefined\ARXIV\def\showacknowledgements{}\fi
+\ifdefined\showacknowledgements
+\section*{Acknowledgements}
+The author thanks Dr.~M.~Ali Tahir (SEECS, National University of Sciences and Technology) for supervising the thesis on which this work builds.
+\fi
