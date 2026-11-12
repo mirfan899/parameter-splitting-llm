@@ -174,7 +174,7 @@ def run_experiment():
     plt.grid(True, linestyle=":", alpha=0.6)
     plt.legend(fontsize=11)
     plt.tight_layout()
-    plot_path = r"C:\Users\Minahil Aman\.gemini\antigravity-ide\scratch\dps_llm_training_curve.png"
+    plot_path = "dps_llm_training_curve.png"
     plt.savefig(plot_path, dpi=300)
     plt.close()
     print(f"[+] Saved comparative training plot to: {plot_path}")

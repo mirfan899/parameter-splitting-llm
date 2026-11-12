@@ -1,7 +1,7 @@
 """
 Discriminative Noise and Symmetry Breaking Generators for Parameter Splitting.
 
-Implements the original formulation from Muhammad Irfan's thesis:
+Implements the original formulation of Irfan (2021), Discriminative splitting of LSTM-RNN deep neural networks:
     f(x) = |(rand(0, 1) - 0.5) * C * N(mu, sigma^2)|
     g(w) = w + f(x) if w >= 0 else w - f(x)
 Extended with modern LLM scaling laws (variance normalization, anti-symmetric
